@@ -6,6 +6,12 @@
     <title>View Profile</title>
     <link href="../css/modern.css" rel="stylesheet">
     <script src="../js/settings.js"></script>
+    <style>
+        hr {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 
 <?php
@@ -47,6 +53,7 @@ if (!isset($_SESSION['id'])) {
                                         <div class="card-header">
                                             <h5 class="card-title mb-0"><?php echo $_SESSION["name"]; ?></h5>
                                         </div>
+                                        <hr>
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-8">
@@ -57,42 +64,49 @@ if (!isset($_SESSION['id'])) {
                                                                 <label class="col-form-label"><?php echo $_SESSION["id"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Email: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["email"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Phone Number: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["phone"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Nationality: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["nationality"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">NID: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["nid"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Date of Birth: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["dob"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Gender: </label>
                                                             <div class="col-sm-8">
                                                                 <label class="col-form-label"><?php echo $_SESSION["gender"]; ?></label>
                                                             </div>
                                                         </div>
+                                                        <hr>
                                                         <div class="form-group row">
                                                             <label class="col-form-label col-sm-4 text-sm-right">Address: </label>
                                                             <div class="col-sm-8">
