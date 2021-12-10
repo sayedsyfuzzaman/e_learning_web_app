@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         else if($user["usertype"]=="Admin"){
             $data = array(
                 'id' => $_COOKIE["username"],
-                'password' =>  $$_COOKIE["password"]
+                'password' =>  $_COOKIE["password"]
             );
             $obj->authenticateUser($data); 
             header("location: Admin/dashboard.php");
