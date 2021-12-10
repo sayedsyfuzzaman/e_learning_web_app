@@ -15,13 +15,20 @@ if (isset($_COOKIE['username'])) {
     $user = $obj->getUser($_COOKIE['username']);
 
     if (!empty($user)) {
+
+        //learner
         if($user["usertype"]=="learner"){
-            $learner = $obj->found_learner($_COOKIE['username'],$_COOKIE['password']);
+            $data = array(
+                'username' => $_COOKIE['username'],
+                'password' =>  $_COOKIE['password']
+            );
+            $learner = $obj->found_learner($data);
             if(!empty($learner)){
                 $name = $learner['name'];
-                $picture = $learner['image'];
+                $picture ="Learner/".$learner['image'];
             }
         }
+        //add your code
     }
 }
 
@@ -43,9 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         require_once "General/Controller/receiceInfoController.php";
         $obj = new user_info();
         $user = $obj->getUser($_SESSION['username']);
+
+        //learner
         if($user["usertype"]=="learner"){
             header("location: Learner/dashboard.php");
         }
+
+        //add your code
     } else {
         $username = test_input($_POST["username"]);
 
@@ -57,6 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $obj = new user_info();
         $user = $obj->getUser($username);
 
+
+        //learner
         if($user["usertype"]=="learner"){
             $student = $obj->found_learner($data);
             $error = $obj->get_error();
@@ -80,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
+        //add your code
     }
 }
 ?>
@@ -234,6 +248,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="text-center">
                                         <?php
                                         if (isset($_COOKIE["username"])) {
+
                                             echo "<img src='" . $picture . "'  class='img-fluid rounded-circle' width='132' height='132' />";
                                         }
                                         ?>
