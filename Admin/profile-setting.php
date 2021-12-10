@@ -107,6 +107,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
 	$data = array(
 		'id' => $_SESSION["id"],
 		'password' => "",
@@ -121,22 +122,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		'image' => "",
 	);
 
+	if (isset($_POST['fname'])) {
+		$data["name"] = $_POST['fname'];
+		$data["email"] = $_POST['email'];
+		$data["phone"] = $_POST['phone'];
+		$data["nationality"] = $_POST['nationality'];
+		$data["nid"] = $_POST['nid'];
+		$data["dob"] = $_POST['dob'];
 
-	$data["name"] = $_POST['fname'];
-	$data["email"] = $_POST['email'];
-	$data["phone"] = $_POST['phone'];
-	$data["nationality"] = $_POST['nationality'];
-	$data["nid"] = $_POST['nid'];
-	$data["dob"] = $_POST['dob'];
+		if (!empty($_POST["gender"])) {
+			$data["gender"] = $_POST["gender"];
+		}
 
-	if (!empty($_POST["gender"])) {
-		$data["gender"] = $_POST["gender"];
+		$data["address"] = $_POST['address'];
+		require_once 'controller/Admin.php';
+		$admin = new Admin();
+		$admin->updateProfile($data);
+	} elseif (isset($_POST['curr_pass'])) {
 	}
-
-	$data["address"] = $_POST['address'];
-	require_once 'controller/Admin.php';
-	$admin = new Admin();
-	$admin->updateProfile($data);
 }
 
 ?>
@@ -375,21 +378,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 										<div class="card-body">
 											<h5 class="card-title">Password</h5>
 
-											<form>
+											<form id="changePass" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 												<div class="form-group">
-													<label for="inputPasswordCurrent">Current password</label>
-													<input type="password" class="form-control" id="inputPasswordCurrent">
+													<label for="inputPasswordCurrent">Current password <span class="text-danger">*</span></label>
+													<input type="password" class="form-control" id="curr-pass" name="curr-pass">
+													<label id="curr-pass-error" class="error validation-error small form-text invalid-feedback"></label>
 													<small><a href="#">Forgot your password?</a></small>
 												</div>
 												<div class="form-group">
-													<label for="inputPasswordNew">New password</label>
-													<input type="password" class="form-control" id="inputPasswordNew">
+													<label for="inputPasswordNew">New password <span class="text-danger">*</span></label>
+													<input type="password" class="form-control" id="new-pass" name="new-pass">
+													<label id="new-pass-error" class="error validation-error small form-text invalid-feedback"></label>
+													<label class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" onclick="showPass()">
+														<span class="custom-control-label">Show Password</span>
+
+													</label>
 												</div>
 												<div class="form-group">
-													<label for="inputPasswordNew2">Verify password</label>
-													<input type="password" class="form-control" id="inputPasswordNew2">
+													<label for="inputPasswordNew2">Verify password <span class="text-danger">*</span></label>
+													<input type="password" class="form-control" id="verify-pass" name="verify-pass">
+													<label id="verify-pass-error" class="error validation-error small form-text invalid-feedback"></label>
 												</div>
-												<button type="submit" class="btn btn-primary">Save changes</button>
+												<button id="change" type="submit" class="btn btn-primary">Save changes</button>
 											</form>
 										</div>
 									</div>
@@ -411,6 +422,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<script src="../js/app.js"></script>
 
 	<script type="text/javascript">
+		function showPass() {
+			var x = document.getElementById("new-pass");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
 		$(function() {
 			$("#close-status").click(function() {
 				$("#status").hide();
@@ -492,8 +511,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$("#fname").removeClass("is-invalid");
 				}
 			}
-
-
 
 			function check_email() {
 				var email = $("#email").val();
@@ -616,6 +633,116 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				check_nid();
 
 				if (error_name === false && error_email === false && error_phone === false && error_nationality === false && error_nid === false) {
+					return true;
+				} else {
+					alert("Please Fill the form Correctly");
+					return false;
+				}
+			});
+
+
+			$("#curr-pass-error").hide();
+			$("#new-pass-error").hide();
+			$("#verify-pass-error").hide();
+			var error_curr = false;
+			var error_new = false;
+			var error_verify = false;
+
+			$("#curr-pass").keyup(function() {
+				check_curr_pass();
+			});
+			$("#curr-pass").blur(function() {
+				check_curr_pass();
+			});
+
+
+			$("#new-pass").keyup(function() {
+				check_new_pass();
+			});
+			$("#new-pass").blur(function() {
+				check_new_pass();
+			});
+
+			$("#verify-pass").keyup(function() {
+				check_verify_pass();
+			});
+			$("#verify-pass").blur(function() {
+				check_verify_pass();
+			});
+
+
+			function check_curr_pass() {
+				var pass = $("#curr-pass").val();
+				if (pass == "") {
+					$("#curr-pass-error").html("This field is required.");
+					$("#curr-pass-error").show();
+					$("#curr-pass").addClass("is-invalid")
+					error_new = true;
+				} else if (pass.length < 8) {
+					$("#curr-pass-error").html("Cannot contain less than eight character.");
+					$("#curr-pass-error").show();
+					$("#curr-pass").addClass("is-invalid")
+					error_new = true;
+				} else {
+					$("#curr-pass-error").hide();
+					$("#curr-pass").removeClass("is-invalid");
+				}
+			}
+
+			function check_new_pass() {
+				var pass = $("#new-pass").val();
+				if (pass == "") {
+					$("#new-pass-error").html("This field is required.");
+					$("#new-pass-error").show();
+					$("#new-pass").addClass("is-invalid")
+					error_curr = true;
+				} else if (pass.length < 8) {
+					$("#new-pass-error").html("Cannot contain less than eight character.");
+					$("#new-pass-error").show();
+					$("#new-pass").addClass("is-invalid")
+					error_curr = true;
+				} else if (/[#$%@]/.test(pass) == false) {
+					$("#new-pass-error").html("Password have to contain at least one '#' or '$' or '%' or '@'.");
+					$("#new-pass-error").show();
+					$("#new-pass").addClass("is-invalid")
+					return false;
+				} else {
+					$("#new-pass-error").hide();
+					$("#new-pass").removeClass("is-invalid");
+				}
+			}
+
+			function check_verify_pass() {
+				var pass = $("#new-pass").val();
+				var verify_pass = $("#verify-pass").val();
+				if (verify_pass == "") {
+					$("#verify-pass-error").html("This field is required.");
+					$("#verify-pass-error").show();
+					$("#verify-pass").addClass("is-invalid")
+					error_verify = true;
+				}
+				else if(pass != verify_pass) {
+					$("#verify-pass-error").html("Password does not matched.");
+					$("#verify-pass-error").show();
+					$("#verify-pass").addClass("is-invalid")
+					error_verify = true;
+				}
+				else {
+					$("#verify-pass-error").hide();
+					$("#verify-pass").removeClass("is-invalid");
+				}
+			}
+
+			$("#changePass").submit(function() {
+				error_curr = false;
+				error_new = false;
+				error_verify = false;
+				check_curr_pass();
+				check_new_pass();
+				check_verify_pass();
+				
+
+				if (error_curr === false && error_new == false && error_verify == false) {
 					return true;
 				} else {
 					alert("Please Fill the form Correctly");

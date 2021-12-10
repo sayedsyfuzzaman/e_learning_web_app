@@ -7,28 +7,43 @@
     <link href="../css/modern.css" rel="stylesheet">
     <script src="../js/settings.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        hr {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 
 <?php
+session_start();
+if (!isset($_SESSION['id'])) {
+    session_destroy();
+    header("location:../sign-in.php");
+}
 
-    session_start();
-    if (!isset($_SESSION['id'])) {
-        session_destroy();
-        header("location:../sign-in.php");
+require_once 'controller/manager.php';
+
+$manager = new Manager();
+$managerInfo = $manager->fetchAllManager();
+
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+}
+?>
+
+<script>
+    var table = document.getElementById('datatable');
+
+    for (var i = 1; i < table.rows.length; i++) {
+        table.rows[i].onclick = function() {
+            rIndex = this.rowIndex;
+            alert(this.cells[1].innerHTML);
+            document.getElementById("fname").value = this.cells[0].innerHTML;
+            document.getElementById("lname").value = this.cells[1].innerHTML;
+            document.getElementById("age").value = this.cells[2].innerHTML;
+        };
     }
-
-    require_once 'controller/manager.php';
-
-    $manager = new Manager();
-    $managerInfo = $manager->fetchAllManager();
-
-    if (isset($_GET['id']) && !empty($_GET['id'])) {
-
-        if ($manager->deleteManager($_GET['id'])) {
-            header('Location: all_managers.php?status=deleted');
-        }
-    }
-    ?>
+</script>
 
 <body>
     <div class="wrapper">
@@ -83,7 +98,7 @@
                                         <tbody>
                                             <?php foreach ($managerInfo as $row) : ?>
                                                 <tr>
-                                                    <td> <img style="height: 40px; height: 40px;" src="<?php echo $row["image"]; ?>" alt="Image"> </td>
+                                                    <td id=""> <img style="height: 40px; height: 40px;" src="<?php echo $row["image"]; ?>" alt="Image"> </td>
                                                     <td><?php echo $row["name"]; ?></td>
                                                     <td><?php echo $row["id"]; ?></td>
                                                     <td><?php echo $row["email"]; ?></td>
@@ -92,11 +107,27 @@
                                                     <td><?php echo $row["salary"]; ?></td>
                                                     <td><?php echo $row["created_at"]; ?></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-outline-primary" onclick="window.location.href='edit_manager.php?id=<?php echo $row['id'] ?>'">View and Edit</button>
+                                                        <button type="button" class="btn btn-outline-primary" id="view-button">View and Edit</button>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='all_managers.php?id=<?php echo $row['id'] ?>'">Delete</button>
                                                     </td>
 
                                                 </tr>
+                                                <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                                    <div class=" modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="modal_id"><?php echo $row['name'] ?></h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
