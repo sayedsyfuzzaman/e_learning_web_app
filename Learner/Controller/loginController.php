@@ -19,7 +19,7 @@
                     $this-> error["usernameErr"] = "ID can contain letter, hyphens(-)";
                 }
                 else{
-                    require_once "model/model.php";
+                    require_once "Learner/model/model.php";
                     $check_username=new model();
 
                     if($check_username->get_a_learner($data["username"])==""){
