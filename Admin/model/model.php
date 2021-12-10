@@ -201,6 +201,28 @@ class model
             echo $e->getMessage();
         }
         $conn = null;
-        return true;
+        if($stmt == true)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function updatePassword($password) {
+        $conn = db_conn();
+        $selectQuery = "UPDATE admin_info set password = ? where id = ? and password = ?";
+        try{
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $password["new"],
+                $password["id"],
+                $password["current"]
+            ]);
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        if($stmt){
+            return true;
+        }
     }
 }

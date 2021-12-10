@@ -28,7 +28,7 @@ class Admin
         }
 
 
-        
+
         $model = new model();
         $accountExist = $model->checkExistingPersonalEmail($data["email"], $data["id"]);
 
@@ -44,7 +44,7 @@ class Admin
         }
 
         //Phone number validation
-        if(!empty($data["phone"])){
+        if (!empty($data["phone"])) {
             if (!filter_var($data["phone"], FILTER_SANITIZE_NUMBER_INT)) {
                 $this->errors["phone"] = "Invalid phone number";
             } elseif (strlen($data["phone"]) != 11) {
@@ -53,7 +53,7 @@ class Admin
                 $this->errors["phone"] = "";
             }
         }
-        
+
 
 
 
@@ -72,7 +72,7 @@ class Admin
 
         if (empty($data["nid"])) {
             $this->errors["nid"] = "Nid cannot be empty";
-        } elseif ($nidExist == true ) {
+        } elseif ($nidExist == true) {
             $this->errors["nid"] =  "Sorry! This NID already exist.";
         } elseif (!filter_var($data["nid"], FILTER_SANITIZE_NUMBER_INT)) {
             $this->errors["nid"] = "Invalid nid number";
@@ -98,7 +98,7 @@ class Admin
 
             $model = new model();
             $updateStatus = $model->updatePersonalInfo($data);
-            if ($updateStatus === true){
+            if ($updateStatus === true) {
                 $_SESSION["name"] = $data["name"];
                 $_SESSION["email"] = $data["email"];
                 $_SESSION["phone"] = $data["phone"];
@@ -107,15 +107,26 @@ class Admin
                 $_SESSION["dob"] = $data["dob"];
                 $_SESSION["gender"] = $data["gender"];
                 $_SESSION["address"] = $data["address"];
-                header("location: profile-setting.php?status=updated");
-            }
-            else
-            {
+                header("location: profile-setting.php?status=info_updated");
+            } else {
                 header("location: profile-setting.php?status=submission_error");
             }
+        } else {
+            header("location: profile-setting.php?status=submission_error");
         }
-        else
-        {
+        return "";
+    }
+
+    function changePassword($password)
+    {
+        $model = new model();
+        $updateStatus = $model->updatePassword($password);
+        if ($updateStatus == true) {
+            $_SESSION["password"] = $password["new"];
+            setcookie("username", $_SESSION['id'], time() + (60 * 60 * 24 * 30 * 12));
+            setcookie("password", $password["new"], time() + (60 * 60 * 24 * 30 * 12));
+            header("location: profile-setting.php?status=password_updated");
+        } else {
             header("location: profile-setting.php?status=submission_error");
         }
         return "";

@@ -121,6 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		'address' => "",
 		'image' => "",
 	);
+	$password = array(
+		'id' => $_SESSION["id"],
+		'current' => "",
+		'new' => "",
+		'verify' => ""
+	);
 
 	if (isset($_POST['fname'])) {
 		$data["name"] = $_POST['fname'];
@@ -138,7 +144,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		require_once 'controller/Admin.php';
 		$admin = new Admin();
 		$admin->updateProfile($data);
-	} elseif (isset($_POST['curr_pass'])) {
+	} 
+	elseif (isset($_POST['curr-pass'])) {
+		$password["current"] = $_POST['curr-pass'];
+		$password["new"] = $_POST['new-pass'];
+		$password["verify"] = $_POST['verify-pass'];
+
+		require_once 'controller/Admin.php';
+		$admin = new Admin();
+		$admin->changePassword($password);
 	}
 }
 
@@ -192,27 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 						<div class="col-md-9 col-xl-10">
 							<div class="tab-content">
 								<div class="tab-pane fade show active" id="account" role="tabpanel">
-
-									<?php
-									if (isset($_GET['status'])) {
-										if ($_GET['status'] === "updated") {
-											echo '<div class="row" id = "status">';
-											echo '<div class="col-12">';
-											echo '<div class="card">';
-											echo '<div class="card-header">';
-											echo '<h5 class="card-title mb-0">Profile updated successfully!</h5>';
-											echo '</div>';
-											echo '</div>';
-											echo '</div>';
-											echo '</div>';
-										} elseif ($_GET['status'] === "submission_error") {
-											echo '<script type ="text/JavaScript">';
-											echo 'alert("Sorry! Something went wrong. Please try again.")';
-											echo '</script>';
-										}
-									}
-									?>
-
 									<div class="card">
 										<div class="card-header">
 											<h1 class="card-title mb-8 text-success">
@@ -430,7 +423,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				x.type = "password";
 			}
 		}
+
 		$(function() {
+			var getUrlParameter = function getUrlParameter(sParam) {
+				var sPageURL = window.location.search.substring(1),
+					sURLVariables = sPageURL.split('&'),
+					sParameterName,
+					i;
+
+				for (i = 0; i < sURLVariables.length; i++) {
+					sParameterName = sURLVariables[i].split('=');
+
+					if (sParameterName[0] === sParam) {
+						return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+					}
+				}
+				return false;
+			};
+			//notification
+			var param = getUrlParameter('status');
+			if (param == "info_updated") {
+				var message = "Your information was updated.";
+				var title = "Successful";
+				var type = "success"; //success info warning error
+				toastr[type](message, title, {
+					positionClass: "toast-bottom-right",
+					closeButton: "checked",
+					progressBar: "checked",
+					newestOnTop: "checked",
+					rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+					timeOut: "2500"
+				});
+			}
+			else if (param == "password_updated") {
+				var message = "Your password was updated.";
+				var title = "Successful";
+				var type = "success"; //success info warning error
+				toastr[type](message, title, {
+					positionClass: "toast-bottom-right",
+					closeButton: "checked",
+					progressBar: "checked",
+					newestOnTop: "checked",
+					rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+					timeOut: "2500"
+				});
+			}
+			else if (param == "submission_error") {
+				var message = "There was an error, We couldn't perform your action. Please try again laterr.";
+				var title = "Error";
+				var type = "error"; //success info warning error
+				toastr[type](message, title, {
+					positionClass: "toast-bottom-right",
+					closeButton: "checked",
+					progressBar: "checked",
+					newestOnTop: "checked",
+					rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+					timeOut: "5000"
+				});
+			}
+
+
+
+			$("#toastr-clear").on("click", function() {
+				toastr.clear();
+			});
 			$("#close-status").click(function() {
 				$("#status").hide();
 			});
@@ -720,14 +776,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$("#verify-pass-error").show();
 					$("#verify-pass").addClass("is-invalid")
 					error_verify = true;
-				}
-				else if(pass != verify_pass) {
+				} else if (pass != verify_pass) {
 					$("#verify-pass-error").html("Password does not matched.");
 					$("#verify-pass-error").show();
 					$("#verify-pass").addClass("is-invalid")
 					error_verify = true;
-				}
-				else {
+				} else {
 					$("#verify-pass-error").hide();
 					$("#verify-pass").removeClass("is-invalid");
 				}
@@ -740,7 +794,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				check_curr_pass();
 				check_new_pass();
 				check_verify_pass();
-				
+
 
 				if (error_curr === false && error_new == false && error_verify == false) {
 					return true;
