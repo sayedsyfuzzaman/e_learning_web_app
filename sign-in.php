@@ -28,7 +28,6 @@ if (isset($_COOKIE['username'])) {
                 $picture ="Learner/".$learner['image'];
             }
         }
-        //admin
 
         //add your code
     }
@@ -109,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (!empty($_POST['remember'])) {
                     setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
                     setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
+                    header("location: Admin/dashboard.php");
                 }else{
                     setcookie("username", "", time() - 3600);
                     setcookie("password", "", time() - 3600);
