@@ -7,6 +7,7 @@ $time = time();
 $usernameErr = $passwordErr = "";
 $username = $password = $name = $picture = "";
 $student = "";
+$isStudent = false;
 $data = [];
 
 if (isset($_COOKIE['username'])) {
@@ -18,6 +19,7 @@ if (isset($_COOKIE['username'])) {
 
         //learner
         if($user["usertype"]=="learner"){
+            $isStudent=true;
             $data = array(
                 'username' => $_COOKIE['username'],
                 'password' =>  $_COOKIE['password']
@@ -46,18 +48,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     if (isset($_COOKIE["username"]) && !empty($_POST['remember']) && $_POST['username'] == $_COOKIE["username"] && $_POST['password'] == $_COOKIE["password"]) {
-        $_SESSION['username'] = $_COOKIE["username"];
-        $_SESSION['password'] = $_COOKIE["password"];
+
         require_once "General/Controller/receiceInfoController.php";
         $obj = new user_info();
         $user = $obj->getUser($_SESSION['username']);
 
         //learner
         if($user["usertype"]=="learner"){
+            $_SESSION['username'] = $_COOKIE["username"];
+            $_SESSION['password'] = $_COOKIE["password"];
             header("location: Learner/dashboard.php");
         }
         //admin
         else if($user["usertype"]=="Admin"){
+            $_SESSION['id'] = $userInfo["id"];
+            $_SESSION['password'] = $userInfo["password"];
+            $_SESSION['usertype'] = $userInfo["usertype"];
+            $_SESSION['name'] = $userInfo["name"];
+            $_SESSION['email'] = $userInfo["email"];
+            $_SESSION['phone'] = $userInfo["phone"];
+            $_SESSION['nationality'] = $userInfo["nationality"];
+            $_SESSION['nid'] = $userInfo["nid"];
+            $_SESSION['dob'] = $userInfo["dob"];
+            $_SESSION['gender'] = $userInfo["gender"];
+            $_SESSION['address'] = $userInfo["address"];
+            $_SESSION['image'] = $userInfo["image"];
             header("location: Admin/dashboard.php");
         }
 
@@ -248,7 +263,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="text-center mt-4">
                             <?php
-                            if (isset($_COOKIE["username"])) {
+                            if ($isStudent) {
                                 echo "<h1 class='h2'>Welcome back, " . $name . "!</h1>";
                             }
                             ?>
@@ -262,7 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="m-sm-4">
                                     <div class="text-center">
                                         <?php
-                                        if (isset($_COOKIE["username"])) {
+                                        if ($isStudent) {
 
                                             echo "<img src='" . $picture . "'  class='img-fluid rounded-circle' width='132' height='132' />";
                                         }
