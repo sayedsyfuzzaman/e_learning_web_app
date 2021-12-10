@@ -28,6 +28,8 @@ if (isset($_COOKIE['username'])) {
                 $picture ="Learner/".$learner['image'];
             }
         }
+        //admin
+
         //add your code
     }
 }
@@ -54,6 +56,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //learner
         if($user["usertype"]=="learner"){
             header("location: Learner/dashboard.php");
+        }
+        //admin
+        else if($user["usertype"]=="Admin"){
+            header("location: Admin/dashboard.php");
         }
 
         //add your code
@@ -88,6 +94,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
                     setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
                 } else {
+                    setcookie("username", "", time() - 3600);
+                    setcookie("password", "", time() - 3600);
+                }
+            }
+        }
+        //admin
+        else if($user["usertype"]=="Admin"){
+            $data = array(
+                'id' => $username,
+                'password' =>  $_POST["password"]
+            );
+            if($obj->authenticateUser($data)){
+                if (!empty($_POST['remember'])) {
+                    setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
+                    setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
+                }else{
                     setcookie("username", "", time() - 3600);
                     setcookie("password", "", time() - 3600);
                 }
@@ -129,13 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 document.getElementById('username').className = "form-control form-control-lg is-invalid";
                 return false;
 
-            } 
-            else if (id.length != 11) {
-                
-                error = "ID must have 11 character.";
-                document.getElementById("username-error").innerHTML = error;
-                document.getElementById('username').className = "form-control form-control-lg is-invalid";
-                return false;
             } else if (/^[0-9-]+$/.test(id) == false) {
                 error = "ID can contain letter, hyphens(-).";
                 document.getElementById("username-error").innerHTML = error;
@@ -145,7 +160,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
                     if (this.responseText == "false") {
-                        error = "ID not matched.";
+                        error = "ID not found.";
                         document.getElementById("username-error").innerHTML = error;
                         document.getElementById('username').className = "form-control form-control-lg is-invalid";
                         return false;

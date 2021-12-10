@@ -68,5 +68,22 @@
     }
 
     //Add your login function
+
+    function getAdminInfo($data){
+        $conn = $this->db_conn();
+        $selectQuery = "select u.usertype , a.* from users u , admin_info a where u.id = a.id and u.id = ? and a.password = ? ";
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["id"],
+                $data["password"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return $rows;
+    }
    }
 ?>
