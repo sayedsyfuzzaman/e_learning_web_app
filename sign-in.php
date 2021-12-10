@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
-    <meta name="author" content="Bootlab">
-
-    <title>Sign In</title>
-
-    <link href="css/modern.css" rel="stylesheet">
-</head>
-<!-- SET YOUR THEME -->
-
 <?php
-
 session_start();
-if (isset($_SESSION['id'])) {
-    header("location: Admin/dashboard.php");
-}
-
-
 $time = time();
-$count = 0;
+$usernameErr = $passwordErr = "";
+$username = $password = $name = $picture = "";
+$student = "";
+$data = [];
 
-if (isset($_COOKIE['invalid'])) {
-    $count = $_COOKIE['invalid'];
-} else {
-    setcookie('invalid', 0);
+if (isset($_COOKIE['username'])) {
+    require_once "General/Controller/receiceInfoController.php";
+    $obj = new user_info();
+    $user = $obj->getUser($_COOKIE['username']);
+
+    if (!empty($user)) {
+        if($user["usertype"]=="learner"){
+            $learner = $obj->found_learner($_COOKIE['username'],$_COOKIE['password']);
+            if(!empty($learner)){
+                $name = $learner['name'];
+                $picture = $learner['image'];
+            }
+        }
+    }
 }
 
-$userErr = "";
-$data = array(
-    'id' => "",
-    'password' => ""
-);
 
 function test_input($data)
 {
@@ -47,105 +34,272 @@ function test_input($data)
     return $data;
 }
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $data = array(
-        'id' => test_input($_POST["id"]),
-        'password' => $_POST["password"]
-    );
 
-
-    if ($count < 3) {
-        if (!empty($_POST["id"]) and !empty($_POST["password"])) {
-            require_once "Admin/controller/authentication.php";
-
-            $authentication = new authentication();
-            $isUser = $authentication->authenticateUser($data);
-
-            if ($isUser == false) {
-                $count = $count + 1;
-                setcookie('invalid', $count, time() + 30);
-                $userErr =  "Invalid id or password!";
-            }
-        } else {
-            $userErr =  "Username or password cannot be empty!";
-        }
-
-        if (!empty($_POST['remember'])) {
-
-            setcookie("id", $_POST['id'], time() + (60*60*24*30*12));
-            setcookie("password", $_POST['password'], time() + (60*60*24*30*12));
+    if (isset($_COOKIE["username"]) && !empty($_POST['remember']) && $_POST['username'] == $_COOKIE["username"] && $_POST['password'] == $_COOKIE["password"]) {
+        $_SESSION['username'] = $_COOKIE["username"];
+        $_SESSION['password'] = $_COOKIE["password"];
+        require_once "General/Controller/receiceInfoController.php";
+        $obj = new user_info();
+        $user = $obj->getUser($_SESSION['username']);
+        if($user["usertype"]=="learner"){
+            header("location: Learner/dashboard.php");
         }
     } else {
-        $userErr =  "Too many login attempts, Please try again later.";
+        $username = test_input($_POST["username"]);
+
+        $data = array(
+            'username' => $username,
+            'password' =>  $_POST["password"]
+        );
+        require_once "General/Controller/receiceInfoController.php";
+        $obj = new user_info();
+        $user = $obj->getUser($username);
+
+        if($user["usertype"]=="learner"){
+            $student = $obj->found_learner($data);
+            $error = $obj->get_error();
+    
+            $usernameErr = $error["usernameErr"];
+            $passwordErr = $error["passwordErr"];
+    
+    
+    
+            if (empty($passwordErr) && empty($usernameErr) && $student != "") {
+                $_SESSION['username'] = $username;
+                $_SESSION['password'] = $post["password"];
+                header("location: Learner/dashboard.php");
+    
+                if (!empty($_POST['remember']) && empty($passwordErr) && empty($usernameErr) && $student != "") {
+                    setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
+                    setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
+                } else {
+                    setcookie("username", "", time() - 3600);
+                    setcookie("password", "", time() - 3600);
+                }
+            }
+        }
     }
 }
 ?>
 
 
-<body>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
+    <meta name="author" content="Bootlab">
+
+    <title>Login</title>
+
+    <style>
+        body {
+            opacity: 0;
+        }
+    </style>
+    <link href="css/modern.css" rel="stylesheet">
+    <script src="js/settings.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120946860-7"></script>
+    <script>
+        function validateusername() {
+            let id = document.forms["loginForm"]["username"].value;
+            let error;
+
+            if (id == "") {
+                error = "Id is required.";
+                document.getElementById("username-error").innerHTML = error;
+                document.getElementById('username').className = "form-control form-control-lg is-invalid";
+                return false;
+
+            } 
+            else if (id.length != 11) {
+                
+                error = "ID must have 11 character.";
+                document.getElementById("username-error").innerHTML = error;
+                document.getElementById('username').className = "form-control form-control-lg is-invalid";
+                return false;
+            } else if (/^[0-9-]+$/.test(id) == false) {
+                error = "ID can contain letter, hyphens(-).";
+                document.getElementById("username-error").innerHTML = error;
+                document.getElementById('username').className = "form-control form-control-lg is-invalid";
+                return false;
+            } else if (id != "") {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    if (this.responseText == "false") {
+                        error = "ID not matched.";
+                        document.getElementById("username-error").innerHTML = error;
+                        document.getElementById('username').className = "form-control form-control-lg is-invalid";
+                        return false;
+                    } else if (this.responseText == "true") {
+                        error = "";
+                        document.getElementById("username-error").innerHTML = error;
+                        document.getElementById('username').className = "form-control form-control-lg";
+                        return true;
+                    }
+                }
+                xhttp.open("GET", "General/Controller/validUsernameCheckController.php?username=" + id);
+                xhttp.send();
+            }
+        }
+
+        function validateLoginpassword() {
+            let password = document.forms["loginForm"]["password"].value;
+            let id = document.forms["loginForm"]["username"].value;
+            let error;
+
+
+            if (id == "") {
+                error = "Fill id first.";
+                document.getElementById("password-error").innerHTML = error;
+                document.getElementById('password').className = "form-control form-control-lg is-invalid";
+                return false;
+            } else if (password == "") {
+                error = "Password is required.";
+                document.getElementById("password-error").innerHTML = error;
+                document.getElementById('password').className = "form-control form-control-lg is-invalid";
+                return false;
+            } else if (password != "" && id != "") {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    if (this.responseText == "false") {
+                        error = "Password not matched.";
+                        document.getElementById("password-error").innerHTML = error;
+                        document.getElementById('password').className = "form-control form-control-lg is-invalid";
+                        return false;
+                    } else if (this.responseText == "true") {
+                        error = "";
+                        document.getElementById("password-error").innerHTML = error;
+                        document.getElementById('password').className = "form-control form-control-lg";
+                        return true;
+                    }
+                }
+                xhttp.open("GET", "General/Controller/validPasswordCheckController.php?username=" + id + "&password=" + password);
+                xhttp.send();
+            }
+        }
+
+
+        function validate_login_form() {
+            let correctID = validateusername();
+            let correctPassword = validateLoginpassword();
+            console.log(correctPassword);
+
+            if (correctID != false && correctPassword != false) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+</head>
+
+
+
+<body class="theme-blue">
+    <section class="pt-6 landing-bg text-white overflow-hidden">
+        <nav class="navbar navbar-expand navbar-dark absolute-top w-100 py-2">
+            <div class="container">
+                <a class="navbar-brand font-weight-bold" href="#">
+                    E Learning Web App
+                </a>
+            </div>
+        </nav>
+    </section>
+
     <main class="main h-100 w-100">
         <div class="container h-100">
-            <div class="row h-100">
+            <div class="row">
                 <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
                     <div class="d-table-cell align-middle">
 
                         <div class="text-center mt-4">
-
-                            <h2>E-Learning Web App</h2>
+                            <?php
+                            if (isset($_COOKIE["username"])) {
+                                echo "<h1 class='h2'>Welcome back, " . $name . "!</h1>";
+                            }
+                            ?>
+                            <p class="lead">
+                                Sign in to your account to continue
+                            </p>
                         </div>
 
                         <div class="card">
                             <div class="card-body">
                                 <div class="m-sm-4">
                                     <div class="text-center">
-                                        <h3>Welcome back!</h3>
-                                        <p class="lead">
-                                            Sign in to your account to continue
-                                        </p>
-
-                                        <b class="text-danger"><?php echo $userErr; ?></b>
+                                        <?php
+                                        if (isset($_COOKIE["username"])) {
+                                            echo "<img src='" . $picture . "'  class='img-fluid rounded-circle' width='132' height='132' />";
+                                        }
+                                        ?>
                                     </div>
-                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                    <form name="loginForm" onsubmit="return validate_login_form()" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                                         <div class="form-group">
                                             <label>ID</label>
-                                            <input class="form-control" type="text" name="id" placeholder="Enter your id" value="<?php if (isset($_COOKIE['id'])) {
-                                                                                                                                                        echo $_COOKIE['id'];
-                                                                                                                                                    } else {
-                                                                                                                                                        echo $data["id"];
-                                                                                                                                                    } ?>" />
+                                            <input class="form-control form-control-lg" id="username" type="text" name="username" placeholder="Enter your id" onblur="validateusername()" onkeyup="validateusername()" value="<?php if (isset($_COOKIE['username'])) {
+                                                                                                                                                                                                                                    echo $_COOKIE['username'];
+                                                                                                                                                                                                                                } ?>" />
+                                            <label id="username-error" class="error validation-error small form-text invalid-feedback"></label>
+                                            <span class="text-danger">
+                                                <?php
+                                                if (!empty($usernameErr)) {
+                                                    echo '<script type="text/JavaScript"> 
+                                                    document.getElementById("username").className = "form-control form-control-lg is-invalid";
+                                                    </script>';
+                                                }
+                                                ?>
+                                            </span>
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input class="form-control" id="password" name="password" type="password" placeholder="Enter your password" value="<?php if (isset($_COOKIE['password'])) {
-                                                                                                                                                                                    echo $_COOKIE['password'];
-                                                                                                                                                                                } else {
-                                                                                                                                                                                    echo $data["password"];
-                                                                                                                                                                                } ?>" />
+                                            <div class="input-group" id="show_hide_password">
+                                                <input class="form-control form-control-lg" type="password" id="password" name="password" placeholder="Enter your password" onblur="validateLoginpassword()" onkeyup="validateLoginpassword()" value="<?php if (isset($_COOKIE['password'])) {
+                                                                                                                                                                                                                                                            echo $_COOKIE['password'];
+                                                                                                                                                                                                                                                        } ?>" />
+                                                <label id="password-error" class="error validation-error small form-text invalid-feedback"><?php
+                                                                                                                                            if (!empty($passwordErr)) {
+                                                                                                                                                echo '<script type="text/JavaScript"> 
+                                                           document.getElementById("password").className = "form-control form-control-lg is-invalid";
+                                                        </script>';
+                                                                                                                                                echo $passwordErr;
+                                                                                                                                            }
+                                                                                                                                            ?></label>
+                                                <span class="text-danger">
+
+                                                </span>
+                                            </div>
+
                                             <small>
                                                 <a href="#">Forgot password?</a>
                                             </small>
                                         </div>
                                         <div>
                                             <div class="custom-control custom-checkbox align-items-center">
-                                                <input id="customControlInline" class="custom-control-input" type="checkbox" id="remember" name="remember" value="remember" checked>
+                                                <input id="customControlInline" type="checkbox" class="custom-control-input" value="remember" name="remember" <?php if (isset($_COOKIE["username"])) {
+                                                                                                                                                                    echo "checked";
+                                                                                                                                                                } ?>>
                                                 <label class="custom-control-label text-small" for="customControlInline">Remember me next time</label>
                                             </div>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="submit" class="btn btn-primary">Sign in</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-
+                        <div class="text-center">Not you? <a href="Learner/registration.php">Sign up</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <script src="js/app.js"></script>
 
 </body>
 
