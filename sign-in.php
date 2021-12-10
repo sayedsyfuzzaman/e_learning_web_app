@@ -61,18 +61,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         //admin
         else if($user["usertype"]=="Admin"){
-            $_SESSION['id'] = $userInfo["id"];
-            $_SESSION['password'] = $userInfo["password"];
-            $_SESSION['usertype'] = $userInfo["usertype"];
-            $_SESSION['name'] = $userInfo["name"];
-            $_SESSION['email'] = $userInfo["email"];
-            $_SESSION['phone'] = $userInfo["phone"];
-            $_SESSION['nationality'] = $userInfo["nationality"];
-            $_SESSION['nid'] = $userInfo["nid"];
-            $_SESSION['dob'] = $userInfo["dob"];
-            $_SESSION['gender'] = $userInfo["gender"];
-            $_SESSION['address'] = $userInfo["address"];
-            $_SESSION['image'] = $userInfo["image"];
+            $data = array(
+                'id' => $_COOKIE["username"],
+                'password' =>  $$_COOKIE["password"]
+            );
+            $obj->authenticateUser($data); 
             header("location: Admin/dashboard.php");
         }
 
