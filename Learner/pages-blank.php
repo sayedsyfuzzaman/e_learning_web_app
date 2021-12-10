@@ -4,8 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Dashboard</title>
-	<link href="css/modern.css" rel="stylesheet">
-	<script src="js/settings.js"></script>
+	<link href="../css/modern.css" rel="stylesheet">
+	<script src="../js/settings.js"></script>
 </head>
 
 <body>
@@ -61,7 +61,7 @@
 	</div>
 
 	<!-- Javascript Start from here -->
-	<script src="js/app.js"></script>
+	<script src="../js/app.js"></script>
 
 </body>
 

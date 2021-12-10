@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Responsive Bootstrap 4 Admin &amp; Dashboard Template">
     <meta name="author" content="Bootlab">
+    <link href="../css/modern.css" rel="stylesheet">
 
     <title>Registration</title>
 
@@ -17,7 +18,7 @@
             opacity: 0;
         }
     </style>
-    <script src="js/settings.js"></script>
+    <script src="../js/settings.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120946860-7"></script>
     <script src="js/validation.js"></script>
 </head>

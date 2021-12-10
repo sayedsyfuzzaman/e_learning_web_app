@@ -60,8 +60,21 @@
                 echo "create_2 ".$e->getMessage();
             }
             
+
+            $selectQuery_2 = "INSERT into users (id, usertype) VALUES (:id, :usertype)";
+                try{
+                    $stmt = $conn->prepare($selectQuery_2);
+                    $stmt->execute([
+                        ':id'               =>    $username ,
+                        ':usertype' => "learner"
+                    ]);
+                }catch(PDOException $e){
+                    echo "create_2 ".$e->getMessage();
+                }
+
             $conn = null;
             return ("<label class='text-success'>Account Created<br>Your ID: ".$username."</p>");
+
     }
 
     function get_a_learner($id){
