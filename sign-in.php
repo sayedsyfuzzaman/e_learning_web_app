@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         require_once "General/Controller/receiceInfoController.php";
         $obj = new user_info();
-        $user = $obj->getUser($_SESSION['username']);
+        $user = $obj->getUser($_COOKIE["username"]);
 
         //learner
         if($user["usertype"]=="learner"){
