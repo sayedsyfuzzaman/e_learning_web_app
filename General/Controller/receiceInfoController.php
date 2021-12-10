@@ -96,7 +96,6 @@ class user_info{
                 $_SESSION['gender'] = $userInfo["gender"];
                 $_SESSION['address'] = $userInfo["address"];
                 $_SESSION['image'] = $userInfo["image"];
-                header("location: Admin/dashboard.php");
             }
         }
         return false;
