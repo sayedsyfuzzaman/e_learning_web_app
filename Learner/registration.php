@@ -237,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">Already have an account? <a href="login.php">Sign in</a></div>
+                        <div class="text-center">Already have an account? <a href="../sign-in.php">Sign in</a></div>
                     </div>
                 </div>
             </div>
