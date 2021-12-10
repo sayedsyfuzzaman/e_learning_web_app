@@ -3,10 +3,10 @@
 
 	if (isset($_SESSION['username'])) {
 		session_destroy();
-		header("location: sign-in.php");
+		header("location: ../sign-in.php");
 	}
 	else{
-		header("location: sign-in.php");
+		header("location: ../sign-in.php");
 	}
 
  ?>

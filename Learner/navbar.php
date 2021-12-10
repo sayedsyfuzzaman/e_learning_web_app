@@ -24,7 +24,7 @@
                         <a class="dropdown-item" href="viewProfile.php"><i class="align-middle mr-1 fas fa-fw fa-user"></i> View Profile</a>
                         <a class="dropdown-item" href="profileSetting.php"><i class="align-middle mr-1 fas fa-fw fa-cogs"></i> Settings</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="../sign_out.php"><i class="align-middle mr-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out</a>
+                        <a class="dropdown-item" href="sign_out.php"><i class="align-middle mr-1 fas fa-fw fa-arrow-alt-circle-right"></i> Sign out</a>
                     </div>
                 </li>
             </ul>
