@@ -6,8 +6,8 @@ class model
     function insertManager($data)
     {
         $conn = db_conn();
-        $Query1 = "INSERT into manager_info (id, password, name, email, phone, nationality, nid, dob, gender, address, created_at)
-                                     VALUES (:id, :password, :name, :email, :phone,:nationality, :nid, :dob, :gender, :address, NOW()); ";
+        $Query1 = "INSERT into manager_info (id, password, name, email, phone, nationality, nid, dob, gender, address, image, created_at)
+                                     VALUES (:id, :password, :name, :email, :phone,:nationality, :nid, :dob, :gender, :address, :image, NOW()); ";
         $Query2 = "INSERT into users (id, usertype)
         VALUES (:id, :usertype); ";
 
@@ -23,7 +23,8 @@ class model
                 ':nid'         => $data["nid"],
                 ':dob'          => $data["dob"],
                 ':gender'        => $data["gender"],
-                ':address'        => $data["address"]
+                ':address'        => $data["address"],
+                ':image'        => $data["image"]
             ]);
 
             $stmt2 = $conn->prepare($Query2);
@@ -224,5 +225,27 @@ class model
         if($stmt){
             return true;
         }
+    }
+
+    function deleteManager($id){
+        $conn = db_conn();
+        $selectQuery = "DELETE FROM `manager_info` WHERE `id` = ?";
+        try{
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([$id]);
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+
+        $selectQuery = "DELETE FROM `users` WHERE `id` = ?";
+        try{
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([$id]);
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }
+        $conn = null;
+    
+        return true;
     }
 }

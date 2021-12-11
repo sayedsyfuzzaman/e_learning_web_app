@@ -103,7 +103,6 @@ class Manager
             $data["id"] = $id;
             $data["password"] = $pass;
 
-
             $model = new model();
             $AddStatus = $model->insertManager($data);
             if ($AddStatus === true){
@@ -126,5 +125,15 @@ class Manager
         $model = new model();
         $managers = $model->showAllManager();
         return $managers;
+    }
+
+    function deleteManager($id)
+    {
+        $model = new model();
+        $Status = $model->deleteManager($id);
+        if ($Status == true) {
+            return true;
+        }
+        return false;
     }
 }

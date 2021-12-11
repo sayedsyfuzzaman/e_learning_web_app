@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'dob' => "",
         'gender' => "",
         'address' => "",
-        'image' => "",
+        'image' => "upload/default.png",
     );
 
 
@@ -96,10 +96,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo '</div>';
                             echo '</div>';
                             echo '</div>';
-                        } elseif ($_GET['status'] === "submission_error") {
-                            echo '<script type ="text/JavaScript">';
-                            echo 'alert("Sorry! Something went wrong. Please try again.")';
-                            echo '</script>';
                         }
                     }
                     ?>
@@ -212,6 +208,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script type="text/javascript">
         $(function() {
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = window.location.search.substring(1),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                    }
+                }
+                return false;
+            };
+            //notification
+            var param = getUrlParameter('status');
+            if (param == "submitted") {
+                var message = "Please note the manager id and password shown in the top.";
+                var title = "Manager Created!";
+                var type = "success"; //success info warning error
+                toastr[type](message, title, {
+                    positionClass: "toast-bottom-right",
+                    closeButton: "checked",
+                    progressBar: "checked",
+                    newestOnTop: "checked",
+                    rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+                    timeOut: "2500"
+                });
+            } else if (param == "submission_error") {
+                var message = "There was an error, We couldn't perform your action. Please try again laterr.";
+                var title = "Error";
+                var type = "error"; //success info warning error
+                toastr[type](message, title, {
+                    positionClass: "toast-bottom-right",
+                    closeButton: "checked",
+                    progressBar: "checked",
+                    newestOnTop: "checked",
+                    rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+                    timeOut: "5000"
+                });
+            }
+
+
+
+            $("#toastr-clear").on("click", function() {
+                toastr.clear();
+            });
             $("#close-status").click(function() {
                 $("#status").hide();
             });

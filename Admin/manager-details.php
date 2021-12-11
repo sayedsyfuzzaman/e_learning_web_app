@@ -27,23 +27,16 @@ require_once 'controller/manager.php';
 $manager = new Manager();
 $managerInfo = $manager->fetchAllManager();
 
-if (isset($_GET['id']) && !empty($_GET['id'])) {
+
+if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
+
+    if ($manager->deleteManager($_GET['delete_manager'])) {
+        header('Location: manager-details.php?status=deleted');
+    } else {
+        header('Location: manager-details.php?status=submission_error');
+    }
 }
 ?>
-
-<script>
-    var table = document.getElementById('datatable');
-
-    for (var i = 1; i < table.rows.length; i++) {
-        table.rows[i].onclick = function() {
-            rIndex = this.rowIndex;
-            alert(this.cells[1].innerHTML);
-            document.getElementById("fname").value = this.cells[0].innerHTML;
-            document.getElementById("lname").value = this.cells[1].innerHTML;
-            document.getElementById("age").value = this.cells[2].innerHTML;
-        };
-    }
-</script>
 
 <body>
     <div class="wrapper">
@@ -71,17 +64,11 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="ion ion-ios-search mr-2"></i></span>
-                                        </div>
-                                        <input type="text" id="input-data" class="form-control" onkeyup="search()" placeholder="Type here to search value from table.">
-                                        <button class="btn btn-secondary"><i class="fas ion-ios-refresh"></i></button>
-                                    </div>
-
+                                    <h5 class="card-title">Showing all manager</h5>
+                                    <h6 class="card-subtitle text-muted">You can print, export and search your desired information.</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table id="datatable" class="table table-striped" style="width:100%">
+                                    <table id="datatables-buttons" class="table table-striped" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Image</th>
@@ -107,27 +94,11 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                                                     <td><?php echo $row["salary"]; ?></td>
                                                     <td><?php echo $row["created_at"]; ?></td>
                                                     <td>
-                                                        <button type="button" class="btn btn-outline-primary" id="view-button">View and Edit</button>
-                                                        <button type="button" class="btn btn-danger" onclick="window.location.href='all_managers.php?id=<?php echo $row['id'] ?>'">Delete</button>
+                                                        <button type="button" class="btn btn-outline-primary" onclick="window.location.href='manager_log.php?id=<?php echo $row['id'] ?>'">View More</button>
+                                                        <button type="button" class="btn btn-danger">Delete</button>
                                                     </td>
-
                                                 </tr>
-                                                <div class="modal fade" id="view" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                                    <div class=" modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="modal_id"><?php echo $row['name'] ?></h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">×</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
 
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
@@ -162,24 +133,76 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     <script src="../js/app.js"></script>
 
     <script>
-        function search() {
-            var input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("input-data");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("datatable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
+        $(".btn-danger").click(function() {
+            var dialog = confirm("Are you sure want to delete this manager?");
+            if (dialog == true) {
+                var currentRow = $(this).closest("tr");
+                var id = currentRow.find("td:eq(2)").text();
+                var url = "manager-details.php?delete_manager="+id;
+                location.replace(url);
+            }
+        });
+        $(function() {
+
+            var getUrlParameter = function getUrlParameter(sParam) {
+                var sPageURL = window.location.search.substring(1),
+                    sURLVariables = sPageURL.split('&'),
+                    sParameterName,
+                    i;
+
+                for (i = 0; i < sURLVariables.length; i++) {
+                    sParameterName = sURLVariables[i].split('=');
+
+                    if (sParameterName[0] === sParam) {
+                        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
                     }
                 }
+                return false;
+            };
+            //notification
+            var param = getUrlParameter('status');
+            if (param == "deleted") {
+                var message = "Manager deleted successfully from the system.";
+                var title = "Deleted!";
+                var type = "success"; //success info warning error
+                toastr[type](message, title, {
+                    positionClass: "toast-bottom-right",
+                    closeButton: "checked",
+                    progressBar: "checked",
+                    newestOnTop: "checked",
+                    rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+                    timeOut: "2500"
+                });
+            } else if (param == "submission_error") {
+                var message = "There was an error, We couldn't perform your action. Please try again laterr.";
+                var title = "Error";
+                var type = "error"; //success info warning error
+                toastr[type](message, title, {
+                    positionClass: "toast-bottom-right",
+                    closeButton: "checked",
+                    progressBar: "checked",
+                    newestOnTop: "checked",
+                    rtl: $("body").attr("dir") === "rtl" || $("html").attr("dir") === "rtl",
+                    timeOut: "5000"
+                });
             }
-        }
+
+
+
+            $("#toastr-clear").on("click", function() {
+                toastr.clear();
+            });
+            $("#close-status").click(function() {
+                $("#status").hide();
+            });
+
+            var datatablesButtons = $('#datatables-buttons').DataTable({
+                lengthChange: !1,
+                buttons: ["csv", "print"],
+                responsive: true
+            });
+            datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)")
+        });
     </script>
 
 
