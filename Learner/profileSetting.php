@@ -30,43 +30,56 @@ if (!empty($learner)) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-	$name = test_input($_POST["name"]);
-	$email = test_input($_POST["email"]);
-
-	if (!empty($_POST["gender"])) {
-		$gender = $_POST["gender"];
+	if(isset($_POST['curr-pass'])) {
+		$data=array(
+			"username"=>$_SESSION['username'],
+			"password" => $_POST['curr-pass'],
+			"new_password" => $_POST['new-pass'],
+			"confirm_password" => $_POST['verify-pass'],
+		);
+		require_once 'Controller/change_passwordController.php';
+		$obj = new passwordCon();
+		$obj->password_change($data);
+		$message=$obj->get_messege();
+	}else{
+		$name = test_input($_POST["name"]);
+		$email = test_input($_POST["email"]);
+	
+		if (!empty($_POST["gender"])) {
+			$gender = $_POST["gender"];
+		}
+		if (!empty($_POST["dob"])) {
+			$dob = $_POST["dob"];
+		}
+		if (!empty($_POST["highest_degree"])) {
+			$highest_degree = $_POST["highest_degree"];
+		}
+		$target_file = $_FILES["fileToUpload"]["name"];
+	
+		$data = array(
+			'name' => $name,
+			'username' => $_SESSION['username'],
+			'email' => $email,
+			'dob' => $dob,
+			'gender' => $gender,
+			'highest_degree' => $highest_degree
+		);
+	
+		require_once "Controller/updateLearnerController.php";
+		$learner = new update();
+	
+		$learner->update_learner($data);
+	
+		$error = $learner->get_error();
+		$message = $learner->get_messege();
+	
+		$nameErr = $error["nameErr"];
+		$emailErr = $error["emailErr"];
+		$dobErr = $error["dobErr"];
+		$genderErr = $error["genderErr"];
+		$highest_degreeErr = $error["highest_degreeErr"];
 	}
-	if (!empty($_POST["dob"])) {
-		$dob = $_POST["dob"];
-	}
-	if (!empty($_POST["highest_degree"])) {
-		$highest_degree = $_POST["highest_degree"];
-	}
-	$target_file = $_FILES["fileToUpload"]["name"];
-
-	$data = array(
-		'name' => $name,
-		'username' => $_SESSION['username'],
-		'email' => $email,
-		'dob' => $dob,
-		'gender' => $gender,
-		'highest_degree' => $highest_degree
-	);
-
-	require_once "Controller/updateLearnerController.php";
-	$learner = new update();
-
-	$learner->update_learner($data);
-
-	$error = $learner->get_error();
-	$message = $learner->get_messege();
-
-	$nameErr = $error["nameErr"];
-	$emailErr = $error["emailErr"];
-	$dobErr = $error["dobErr"];
-	$genderErr = $error["genderErr"];
-	$highest_degreeErr = $error["highest_degreeErr"];
+	
 }
 ?>
 
@@ -391,23 +404,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 										<div class="card-body">
 											<h5 class="card-title">Password</h5>
 
-											<form>
+											<form id="changePass" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
 												<div class="form-group">
 													<label for="inputPasswordCurrent">Current password</label>
-													<input type="password" class="form-control" id="inputPasswordCurrent">
+													<input type="password" class="form-control form-control-lg" id="curr-pass" name="curr-pass">
+													<label id="curr-pass-error" class="error validation-error small form-text invalid-feedback"></label>
 													<small><a href="#">Forgot your password?</a></small>
 												</div>
 												<div class="form-group">
-													<label for="inputPasswordNew">New password</label>
-													<input type="password" class="form-control" id="inputPasswordNew">
+													<label for="inputPasswordNew">New password </label>
+													<input type="password" class="form-control form-control-lg" id="new-pass" name="new-pass">
+													<label id="new-pass-error" class="error validation-error small form-text invalid-feedback"></label>
+													<label class="custom-control custom-checkbox">
+														<input type="checkbox" class="custom-control-input" onclick="showPass()">
+														<span class="custom-control-label">Show Password</span>
+
+													</label>
 												</div>
 												<div class="form-group">
 													<label for="inputPasswordNew2">Verify password</label>
-													<input type="password" class="form-control" id="inputPasswordNew2">
+													<input type="password" class="form-control form-control-lg" id="verify-pass" name="verify-pass">
+													<label id="verify-pass-error" class="error validation-error small form-text invalid-feedback"></label>
 												</div>
-												<button type="submit" class="btn btn-primary">Save changes</button>
+												<button id="change" type="submit" class="btn btn-primary">Save changes</button>
 											</form>
-
 										</div>
 									</div>
 								</div>
@@ -426,6 +446,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	<!-- Javascript Start from here -->
 	<script src="../js/app.js"></script>
+	<script>
+		function showPass() {
+			var x = document.getElementById("new-pass");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+	</script>
 
 </body>
 
