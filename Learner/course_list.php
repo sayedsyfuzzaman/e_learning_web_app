@@ -39,25 +39,17 @@ if (!isset($_SESSION['username'])) {
             <!-- Start from here -->
             <main class="content">
                 <div class="container-fluid">
-
-
-                    <div class="header">
-                        <h1 class="header-title">
-                            Course List
-                        </h1>
-                        <p class="header-subtitle"></p>
-                    </div>
-
                     <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="card-title">Blank</h5>
+                        <div class="col-md-12 text-center">
+                            <h1 class="text-white">Course List</h1>
+                        </div>
+                        <div class="col-md-12 col-lg-12 text-center">
+                            <a class="mb-3 card overflow-hidden" href="#">
+                                <div class="px-4 pt-4">
+                                    <img src="../courseThumbnail/course-thumbnail.png" class="img-fluid card-img-hover landing-img" />
                                 </div>
-                                <div class="card-body">
-
-                                </div>
-                            </div>
+                            </a>
+                            <h4>No Course available yet!</h4>
                         </div>
                     </div>
                 </div>
