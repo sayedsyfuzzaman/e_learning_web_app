@@ -30,9 +30,9 @@ if (!empty($learner)) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	if(isset($_POST['curr-pass'])) {
-		$data=array(
-			"username"=>$_SESSION['username'],
+	if (isset($_POST['curr-pass'])) {
+		$data = array(
+			"username" => $_SESSION['username'],
 			"password" => $_POST['curr-pass'],
 			"new_password" => $_POST['new-pass'],
 			"confirm_password" => $_POST['verify-pass'],
@@ -40,11 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		require_once 'Controller/change_passwordController.php';
 		$obj = new passwordCon();
 		$obj->password_change($data);
-		$message=$obj->get_messege();
-	}else{
+		$message = $obj->get_messege();
+	} else {
 		$name = test_input($_POST["name"]);
 		$email = test_input($_POST["email"]);
-	
+
 		if (!empty($_POST["gender"])) {
 			$gender = $_POST["gender"];
 		}
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$highest_degree = $_POST["highest_degree"];
 		}
 		$target_file = $_FILES["fileToUpload"]["name"];
-	
+
 		$data = array(
 			'name' => $name,
 			'username' => $_SESSION['username'],
@@ -64,22 +64,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			'gender' => $gender,
 			'highest_degree' => $highest_degree
 		);
-	
+
 		require_once "Controller/updateLearnerController.php";
 		$learner = new update();
-	
+
 		$learner->update_learner($data);
-	
+
 		$error = $learner->get_error();
 		$message = $learner->get_messege();
-	
+
 		$nameErr = $error["nameErr"];
 		$emailErr = $error["emailErr"];
 		$dobErr = $error["dobErr"];
 		$genderErr = $error["genderErr"];
 		$highest_degreeErr = $error["highest_degreeErr"];
 	}
-	
 }
 ?>
 
@@ -90,14 +89,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<link href="../css/modern.css" rel="stylesheet">
 	<script src="../js/settings.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-		document.getElementById('home').className = "sidebar-item";
-		document.getElementById('view_profile').className = "sidebar-item active";
-	</script>
 	<script src="js/jQuarrayValidation.js">
 	</script>
 
-<link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
+	<link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
 	<script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -189,6 +184,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<?php
 		include 'sidebar.php';
 		?>
+		<script>
+			document.getElementById('home').className = "sidebar-item";
+			document.getElementById('view_profile').className = "sidebar-item active";
+		</script>
 		<div class="main">
 			<?php
 			include 'navbar.php';
@@ -224,9 +223,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 									</a>
 									<a class="list-group-item list-group-item-action" data-toggle="list" href="#password" role="tab">
 										Password
-									</a>
-									<a class="list-group-item list-group-item-action" data-toggle="list" href="#" role="tab">
-										Delete account
 									</a>
 								</div>
 							</div>
