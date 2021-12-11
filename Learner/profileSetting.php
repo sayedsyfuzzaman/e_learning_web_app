@@ -51,12 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		'email' => $email,
 		'dob' => $dob,
 		'gender' => $gender,
-		'highest_degree' => $highest_degree,
-		'file' =>  $target_file,
-		'old_file' => $picture,
-		'temp_name' => $_FILES["fileToUpload"]["tmp_name"],
-		'size' => $_FILES["fileToUpload"]["size"],
-		'filepath' => $picture
+		'highest_degree' => $highest_degree
 	);
 
 	require_once "Controller/updateLearnerController.php";
@@ -72,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$dobErr = $error["dobErr"];
 	$genderErr = $error["genderErr"];
 	$highest_degreeErr = $error["highest_degreeErr"];
-	$pictureErr = $error["pictureErr"];
 }
 ?>
 
@@ -90,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<script src="js/jQuarrayValidation.js">
 	</script>
 
-	<link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
+<link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
 	<script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
 	<script>
 		$(document).ready(function() {
@@ -145,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					reader.onloadend = function() {
 						var base64data = reader.result;
 						$.ajax({
-							url: 'controller/image_upload.php',
+							url: 'Controller/image_upload.php',
 							method: 'POST',
 							data: {
 								crop_image: base64data
@@ -162,7 +156,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			});
 		});
 	</script>
-
 	<style>
 		img {
 			max-width: 100%;
@@ -299,7 +292,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 													</div>
 												</div>
 												<div class="modal-footer">
-													<button type="button" id="crop_and_upload" class="btn btn-primary">Crop</button>
+													<button type="button" id="crop_and_upload" class="btn btn-primary">Upload</button>
 													<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 												</div>
 											</div>

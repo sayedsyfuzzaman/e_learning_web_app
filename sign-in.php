@@ -70,7 +70,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         //add your code
-    } else {
+    }else if (isset($_COOKIE["username"]) && empty($_POST['remember']) && $_POST['username'] == $_COOKIE["username"] && $_POST['password'] == $_COOKIE["password"]) {
+
+        require_once "General/Controller/receiceInfoController.php";
+        $obj = new user_info();
+        $user = $obj->getUser($_COOKIE["username"]);
+
+        //learner
+        if($user["usertype"]=="learner"){
+            $_SESSION['username'] = $_COOKIE["username"];
+            $_SESSION['password'] = $_COOKIE["password"];
+            setcookie("username", "", time() - 3600);
+            setcookie("password", "", time() - 3600);
+            header("location: Learner/dashboard.php");
+        }
+        //admin
+        else if($user["usertype"]=="Admin"){
+            $data = array(
+                'id' => $_COOKIE["username"],
+                'password' =>  $_COOKIE["password"]
+            );
+            $obj->authenticateUser($data); 
+            setcookie("username", "", time() - 3600);
+            setcookie("password", "", time() - 3600);
+            header("location: Admin/dashboard.php");
+        }
+
+        //add your code
+    }
+    else {
         $username = test_input($_POST["username"]);
 
         $data = array(

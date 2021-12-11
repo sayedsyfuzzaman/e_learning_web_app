@@ -89,3 +89,4 @@ class model
         return $rows;
     }
 }
+?>

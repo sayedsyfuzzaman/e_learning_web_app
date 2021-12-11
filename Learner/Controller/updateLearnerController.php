@@ -7,7 +7,6 @@ class update{
         'emailErr' =>"",
         'dobErr' =>"",
         'genderErr' =>"",
-        'pictureErr' =>"",
         'highest_degreeErr'=>""
     );
     public $message="";
@@ -72,54 +71,8 @@ class update{
       }
 
 
-      $target_dir = "picture/";
-      if(empty($data["file"])){
-          $this->error["pictureErr"]="";
-      }else{
-        $target_file =  $target_dir .$data["file"];
-        $uploaded = 0;
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-        $filepath = "";
-        if ($data["file"] != "") {
-            $check = getimagesize($data["temp_name"]);
-            if ($check !== false) {
   
-                $uploaded = 1;
-            } else {
-                $this->error["pictureErr"] = "File is not an image.";
-                $uploaded = 0;
-            }
-            if ($data["size"] > 40000000000) {
-                $this->error["pictureErr"] = "Sorry, your file is too large.";
-                $uploaded = 0;
-            }
-            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                $this->error["pictureErr"] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                $uploaded = 0;
-            }
-            if ($uploaded == 0) {
-                $this->error["pictureErr"] = "Sorry, your file was not uploaded.";
-            } else {
-                if (move_uploaded_file($data["temp_name"], $target_file)) {
-                    $filepath = $target_dir . htmlspecialchars(basename($data["file"]));
-  
-                    if ($data["old_file"] != "broken.png" && $data["old_file"]!= $filepath) {
-                        unlink($data["old_file"]);
-                    }
-
-                    $data['filepath']=$filepath;
-                } else {
-                    $this->error["pictureErr"] = "Sorry, there was an error uploading your file.";
-                }
-            }
-        } else {
-            $this->error["pictureErr"] = "No Image was selected";
-        }
-      }
-
-
-  
-      if (empty($this-> error["nameErr"]) && empty($this-> error["emailErr"]) && empty($this-> error["dobErr"]) && empty($this-> error["highest_degreeErr"]) && empty($this-> error["genderErr"]) && empty($this-> error["pictureErr"])) {
+      if (empty($this-> error["nameErr"]) && empty($this-> error["emailErr"]) && empty($this-> error["dobErr"]) && empty($this-> error["highest_degreeErr"]) && empty($this-> error["genderErr"])) {
         require_once "model/model.php";
         $obj=new model();
         $this->message=$obj->update_learner($data);

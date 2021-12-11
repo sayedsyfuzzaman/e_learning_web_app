@@ -165,11 +165,11 @@
     
        function update_learner($learner){
         $conn = $this->db_conn();
-        $selectQuery = "UPDATE learner_info set name = ?, email = ?, dob = ?, gender = ?,highest_degree=?,image=?  where id = ?";
+        $selectQuery = "UPDATE learner_info set name = ?, email = ?, dob = ?, gender = ?,highest_degree=? where id = ?";
         try{
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([
-                $learner['name'], $learner['email'], $learner['dob'], $learner['gender'],$learner['highest_degree'], $learner['filepath'], $learner['username']
+                $learner['name'], $learner['email'], $learner['dob'], $learner['gender'],$learner['highest_degree'], $learner['username']
             ]);
         }catch(PDOException $e){
             echo "Update ".$e->getMessage();
@@ -179,16 +179,16 @@
        }
 
        function change_picture($learner){
-
         $conn = $this->db_conn();
-        $selectQuery = "UPDATE learner set picture = ? where username = ?";
-        try{
+        $selectQuery = "UPDATE `learner_info` SET `image`= ? WHERE `id` = ?";
+        try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([
-                $learner['filepath'], $learner['username']
+                $learner["picture"],
+                $learner["id"]
             ]);
-        }catch(PDOException $e){
-            echo "change picture  ".$e->getMessage();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
         }
         $conn = null;
        }
