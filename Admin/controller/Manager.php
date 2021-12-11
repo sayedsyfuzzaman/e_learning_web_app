@@ -28,7 +28,7 @@ class Manager
         }
 
 
-        
+
         $model = new model();
         $accountExist = $model->checkExistingEmail($data["email"]);
 
@@ -45,7 +45,7 @@ class Manager
 
 
         //Phone number validation
-        if(!empty($data["phone"])){
+        if (!empty($data["phone"])) {
             if (!filter_var($data["phone"], FILTER_SANITIZE_NUMBER_INT)) {
                 $this->errors["phone"] = "Invalid phone number";
             } elseif (strlen($data["phone"]) != 11) {
@@ -54,7 +54,7 @@ class Manager
                 $this->errors["phone"] = "";
             }
         }
-        
+
 
 
         //nationality validation
@@ -105,16 +105,12 @@ class Manager
 
             $model = new model();
             $AddStatus = $model->insertManager($data);
-            if ($AddStatus === true){
-                header("location: add-manager.php?status=submitted&id=".$data["id"]."&password=".$data["password"]);
-            }
-            else
-            {
+            if ($AddStatus === true) {
+                header("location: add-manager.php?status=submitted&id=" . $data["id"] . "&password=" . $data["password"]);
+            } else {
                 header("location: add-manager.php?status=submission_error");
             }
-        }
-        else
-        {
+        } else {
             header("location: add-manager.php?status=submission_error");
         }
         return "";
@@ -125,6 +121,42 @@ class Manager
         $model = new model();
         $managers = $model->showAllManager();
         return $managers;
+    }
+
+    function fetchManager($id)
+    {
+        $model = new model();
+        $manager = $model->showManager($id);
+
+        if (!empty($manager)) {
+            $managerInfo = array();
+            foreach ($manager as $rows) {
+                $managerInfo = array(
+                    'id' => $rows["id"],
+                    'name' => $rows["name"],
+                    'email' => $rows["email"],
+                    'phone' => $rows["phone"],
+                    'nationality' => $rows["nationality"],
+                    'nid' => $rows["nid"],
+                    'dob' => $rows["dob"],
+                    'gender' => $rows["gender"],
+                    'address' => $rows["address"],
+                    'image' => $rows["image"],
+                    'salary' => $rows["salary"],
+                    'created_at' => $rows["created_at"]
+                );
+                break;
+            }
+        }
+
+        return $managerInfo;
+    }
+
+    function managerActivity($id)
+    {
+        $model = new model();
+        $history = $model->showActivityLog($id);
+        return $history;
     }
 
     function deleteManager($id)

@@ -733,12 +733,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$("#curr-pass-error").html("This field is required.");
 					$("#curr-pass-error").show();
 					$("#curr-pass").addClass("is-invalid")
-					error_new = true;
+					error_curr = true;
 				} else if (pass.length < 8) {
 					$("#curr-pass-error").html("Cannot contain less than eight character.");
 					$("#curr-pass-error").show();
 					$("#curr-pass").addClass("is-invalid")
-					error_new = true;
+					error_curr = true;
 				} else {
 					$("#curr-pass-error").hide();
 					$("#curr-pass").removeClass("is-invalid");
@@ -751,12 +751,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 					$("#new-pass-error").html("This field is required.");
 					$("#new-pass-error").show();
 					$("#new-pass").addClass("is-invalid")
-					error_curr = true;
+					error_new = true;
 				} else if (pass.length < 8) {
 					$("#new-pass-error").html("Cannot contain less than eight character.");
 					$("#new-pass-error").show();
 					$("#new-pass").addClass("is-invalid")
-					error_curr = true;
+					error_new = true;
 				} else if (/[#$%@]/.test(pass) == false) {
 					$("#new-pass-error").html("Password have to contain at least one '#' or '$' or '%' or '@'.");
 					$("#new-pass-error").show();

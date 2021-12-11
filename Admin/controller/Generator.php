@@ -1,9 +1,6 @@
 <?php
 require_once 'model/model.php';
 function getManagerID() {
-
-    
-    
     $model = new model();
     $count = $model->getTotalManagerNumber();
     $count = (int)$count + 1000;
