@@ -12,7 +12,7 @@ class passwordCon{
         if (empty($data["password"])) {
             $this->error["passwordErr"] = "Password is required";
         } else {
-            if (strlen($data["password"]) < 9) {
+            if (strlen($data["password"]) < 8) {
                 $this->error["passwordErr"] = "Password must contain at least 8 character";
             } 
             else {
@@ -21,7 +21,7 @@ class passwordCon{
                     $this->error["passwordErr"] = "Password have to contain at least one '#' or '$' or '%' or '@'";
                 } else {
 
-                    require_once "C:/xampp/htdocs/Fall21_22/Lab task 6/model/model.php";
+                    require_once "model/model.php";
                     $obj=new model();
                     $learner=$obj->get_a_learner($data["username"]);
 
@@ -32,7 +32,7 @@ class passwordCon{
                                 if (empty($data["new_password"])) {
                                     $this->error["new_passwordErr"]= "Password is required";
                                 } else {
-                                    if (strlen($data["new_password"]) < 9) {
+                                    if (strlen($data["new_password"]) < 8) {
                                         $this->error["new_passwordErr"] = "Password must contain at least 8 character";
                                     } else {
 
@@ -45,6 +45,7 @@ class passwordCon{
                                                 if (strcmp($data["new_password"], $data["confirm_password"]) !== 0) {
                                                     $this->error["confirm_passwordErr"]= "Password are not matched";
                                                 } else {
+                                                    
 
                                                     $learnerArr=array(
                                                         'username'=>$data["username"],

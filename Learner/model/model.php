@@ -194,9 +194,8 @@
        }
 
        function change_password($learner){
-
         $conn = $this->db_conn();
-        $selectQuery = "UPDATE learner set password = ? where username = ?";
+        $selectQuery = "UPDATE learner_info set password = ? where id = ?";
         try{
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([

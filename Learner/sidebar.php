@@ -53,7 +53,7 @@ if (!empty($learner)) {
                     </a>
                     <ul id="course" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                         <li class="sidebar-item "><a class="sidebar-link" href="#">Add Course</a></li>
-                        <li class="sidebar-item"><a class="sidebar-link" href="#">Course List</a></li>
+                        <li id="course_list" class="sidebar-item"><a class="sidebar-link" href="course_list.php">Course List</a></li>
                     </ul>
                 </li>
             </ul>
