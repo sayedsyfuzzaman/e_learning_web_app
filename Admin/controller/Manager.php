@@ -116,13 +116,6 @@ class Manager
         return "";
     }
 
-    function fetchAllManager()
-    {
-        $model = new model();
-        $managers = $model->showAllManager();
-        return $managers;
-    }
-
     function fetchManager($id)
     {
         $model = new model();

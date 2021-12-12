@@ -22,12 +22,6 @@ if (!isset($_SESSION['id'])) {
     header("location:../sign-in.php");
 }
 
-require_once 'controller/manager.php';
-
-$manager = new Manager();
-$managerInfo = $manager->fetchAllManager();
-
-
 if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
 
     if ($manager->deleteManager($_GET['delete_manager'])) {
@@ -83,23 +77,6 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($managerInfo as $row) : ?>
-                                                <tr>
-                                                    <td id=""> <img style="height: 40px; height: 40px;" src="<?php echo $row["image"]; ?>" alt="Image"> </td>
-                                                    <td><?php echo $row["name"]; ?></td>
-                                                    <td><?php echo $row["id"]; ?></td>
-                                                    <td><?php echo $row["email"]; ?></td>
-                                                    <td><?php echo $row["nationality"]; ?></td>
-                                                    <td><?php echo $row["nid"]; ?></td>
-                                                    <td><?php echo $row["salary"]; ?></td>
-                                                    <td><?php echo $row["created_at"]; ?></td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-outline-primary" onclick="window.location.href='manager_log.php?id=<?php echo $row['id'] ?>'">View More</button>
-                                                        <button type="button" class="btn btn-danger">Delete</button>
-                                                    </td>
-                                                </tr>
-
-                                            <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
@@ -196,12 +173,23 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                 $("#status").hide();
             });
 
-            var datatablesButtons = $('#datatables-buttons').DataTable({
-                lengthChange: !1,
-                buttons: ["csv", "print"],
-                responsive: true
-            });
-            datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)")
+            $('#datatables-buttons').DataTable({
+            ajax: {
+                url: 'model/getManagers.php',
+                dataSrc: ''
+            },
+            columns: [
+                { data: "image" },
+                { data: "name" },
+                { data: "id" },
+                { data: "email" },
+                { data: "nationality" },
+                { data: "nid" },
+                { data: "salary" },
+                { data: "created_at" },
+                { data: "action" },
+            ]
+        });
         });
     </script>
 

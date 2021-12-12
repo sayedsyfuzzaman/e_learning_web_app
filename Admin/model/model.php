@@ -180,6 +180,20 @@ class model
         $conn = null;
         return $rows;
     }
+    function showAllLearner()
+    {
+        $conn = db_conn();
+        $selectQuery = 'SELECT * FROM `learner_info` ';
+        try {
+            $stmt = $conn->query($selectQuery);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return $rows;
+    }
+
 
     
     function updatePersonalInfo($data) {
@@ -253,6 +267,20 @@ class model
     {
         $conn = db_conn();
         $selectQuery = 'SELECT * FROM `manager_info` where id = ?';
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+
+    function showLearner($id)
+    {
+        $conn = db_conn();
+        $selectQuery = 'SELECT * FROM `learner_info` where id = ?';
         try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([$id]);

@@ -35,11 +35,13 @@
 
                 <li class="sidebar-item">
                     <a href="#manager" data-toggle="collapse" class="sidebar-link collapsed">
-                        <i class="align-middle mr-2 fas fa-fw ion-ios-person"></i> <span class="align-middle">Manager</span>
+                        <i class="align-middle mr-2 fas fa-fw ion-ios-person"></i> <span class="align-middle">Users</span>
                     </a>
                     <ul id="manager" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                         <li class="sidebar-item "><a class="sidebar-link" href="add-manager.php">Add Manager</a></li>
-                        <li class="sidebar-item"><a class="sidebar-link" href="manager-details.php">Manager List</a></li>
+                        <li class="sidebar-item"><a class="sidebar-link" href="manager-details.php">Managers Information</a></li>
+                        <li class="sidebar-item"><a class="sidebar-link" href="instructor-details.php">Instructors Information</a></li>
+                        <li class="sidebar-item"><a class="sidebar-link" href="learner-details.php">Learners Information</a></li>
                     </ul>
                 </li>
 
