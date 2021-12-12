@@ -28,6 +28,10 @@ if (isset($_COOKIE['username'])) {
             if(!empty($learner)){
                 $name = $learner['name'];
                 $picture ="Learner/".$learner['image'];
+                echo $picture;
+            }else{
+                setcookie("username", "", time() - 3600);
+                setcookie("password", "", time() - 3600);
             }
         }
 
