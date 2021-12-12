@@ -205,18 +205,6 @@
             echo "change password  ".$e->getMessage();
         }
         $conn = null;
-       }
-
-       function delete_learner($id){
-        $conn = $this->db_conn();
-        $selectQuery = "DELETE FROM `learner` WHERE `username` = ?";
-        try{
-            $stmt = $conn->prepare($selectQuery);
-            $stmt->execute([$id]);
-        }catch(PDOException $e){
-            echo "Delete learner ".$e->getMessage();
-        }
-        $conn = null;
-       }
+     }
    }
 ?>
