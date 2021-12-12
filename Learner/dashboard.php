@@ -60,7 +60,7 @@ $allCourses = $course->get_LearnerCourseInfo($_SESSION['username']);
                         <?php if (!empty($allCourses)) : ?>
                             <?php foreach ($allCourses as $course) : ?>
                                 <div class="col-md-4 col-lg-4 text-center">
-                                    <a class="mb-3 card overflow-hidden" href="#" >
+                                    <a class="mb-3 card overflow-hidden" href="<?PHP echo "courseDashboard.php?course_id=".$course['course_id']?>" >
                                         <div class="px-4 pt-4">
                                             <img src=<?PHP echo "../" . $course["thumbnail"] ?> class="img-fluid card-img-hover landing-img" />
                                         </div>

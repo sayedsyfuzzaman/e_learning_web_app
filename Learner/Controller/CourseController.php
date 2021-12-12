@@ -12,5 +12,17 @@ class course{
         $obj=new courseModel();
         return $obj->getLearnerCourseInfo($id);
     }
+
+    function get_LearnerACourseInfo($data){
+        require_once "model/course_model.php";
+        $obj=new courseModel();
+        return $obj->getLearnerACourseInfo($data);
+    }
+
+    function get_LearnerACourseProgress($data){
+        require_once "model/course_model.php";
+        $obj=new courseModel();
+        return $obj->getLearnerACourseProgress($data);
+    }
 }
 ?>

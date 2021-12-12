@@ -1,22 +1,30 @@
 <?PHP
 session_start();
 $name = $picture = "";
-$allCourses = array();
-if(isset($_GET["course_id"])){
-    $_SESSION["course_id"]=$_GET["course_id"];
+$progress = 0;
+$Course = array();
+if (isset($_GET["course_id"])) {
+    $_SESSION["course_id"] = $_GET["course_id"];
 }
 if (!isset($_SESSION['username'])) {
     header("location:login.php");
 }
-if (!isset($_SESSION['course_id'])){
-    header("location:deshboard.php");
-}else{
-    
+if (!isset($_SESSION['course_id'])) {
+    header("location:dashboard.php");
+} else {
+    $data = array(
+        "id" => $_SESSION['username'],
+        "course_id" => $_SESSION["course_id"]
+    );
+    require_once "Controller/CourseController.php";
+    $obj = new course();
+    $Course = $obj->get_LearnerACourseInfo($data);
+    if (empty($Course)) {
+        unset($_SESSION['course_id']);
+        header("location:dashboard.php");
+    }
+    $progress = $obj->get_LearnerACourseProgress($data);
 }
-require_once "Controller/CourseController.php";
-$course = new course();
-$allCourses = $course->get_LearnerCourseInfo($_SESSION['username']);
-
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +32,7 @@ $allCourses = $course->get_LearnerCourseInfo($_SESSION['username']);
 
 <head>
     <meta charset="utf-8">
-    <title>Dashboard</title>
+    <title>Crouse Dashboard</title>
     <link href="../css/modern.css" rel="stylesheet">
     <script src="../js/settings.js"></script>
 
@@ -50,32 +58,18 @@ $allCourses = $course->get_LearnerCourseInfo($_SESSION['username']);
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <h1 class="text-white">Your taken courses</h1>
+                            <h1 class="text-white">Your courses</h1>
                         </div>
-                        <?php if (empty($allCourses)) : ?>
-                            <div class="col-md-12 col-lg-12 text-center">
-                                <a class="mb-3 card overflow-hidden" href="#">
-                                    <div class="px-4 pt-4">
-                                        <img src="../courseThumbnail/course-thumbnail.png" class="img-fluid card-img-hover landing-img" />
-                                    </div>
-                                </a>
-                                <h4>You haven't taken any courses!</h4>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($allCourses)) : ?>
-                            <?php foreach ($allCourses as $course) : ?>
-                                <div class="col-md-4 col-lg-4 text-center">
-                                    <a class="mb-3 card overflow-hidden" href="#" >
-                                        <div class="px-4 pt-4">
-                                            <img src=<?PHP echo "../" . $course["thumbnail"] ?> class="img-fluid card-img-hover landing-img" />
-                                        </div>
-                                    </a>
-                                    <h4><?PHP echo $course["course_name"] ?></h4>
-                                    <h5><?PHP echo "Course ID: " . $course["course_id"] ?></h5>
+                        <div class="col-md-12 col-lg-12 text-center">
+                            <a class="mb-3 card overflow-hidden">
+                                <div class="px-4 pt-4">
+                                    <img src=<?PHP echo "../" . $Course["thumbnail"] ?> class="img-fluid card-img-hover landing-img" />
+                                    <h2><?PHP echo "Progression: " . $progress."%" ?></h2>
                                 </div>
-
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+                            </a>
+                            <h2><?PHP echo $Course["course_name"] ?></h2>
+                            <h3><?PHP echo "Course ID: " . $Course["course_id"] ?></h3>
+                        </div>
                     </div>
                 </div>
             </main>

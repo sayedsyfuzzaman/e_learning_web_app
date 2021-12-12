@@ -81,6 +81,35 @@ class courseModel{
                     echo "create_2 ".$e->getMessage();
                 }
 
+            $selectQuery = 'SELECT * FROM `course_material` where `course_id`=?';
+            try{
+                $stmt = $conn->prepare($selectQuery);
+                $stmt->execute([
+                    $data["course_id"]
+                ]);
+            }catch(PDOException $e){
+                echo "course ".$e->getMessage();
+            }
+                $matarials = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                $matarial=array();
+            foreach($matarials as $row){
+                $matarial=$row;
+                break;
+            }
+
+            $selectQuery_2 = "INSERT INTO `course_progression`(`learner_id`, `material_id`, `status`) VALUES (:learner_id, :material_id, :status)";
+                try{
+                    $stmt = $conn->prepare($selectQuery_2);
+                    $stmt->execute([
+                        ':learner_id'               =>    $data["id"] ,
+                        ':material_id' => $matarial["material_id"],
+                        ':status' => "incomplete",
+                    ]);
+                }catch(PDOException $e){
+                    echo "create_2 ".$e->getMessage();
+                }
+
+
             $conn = null;
 
     }
@@ -104,6 +133,61 @@ class courseModel{
         
         return $result;
     }
+
+    function getLearnerACourseInfo($data){
+
+        $conn = $this->db_conn();
+        $selectQuery = "select c.* from course_info c, enrolled_course ec where c.course_id = ec.course_id and ec.learner_id = ? and ec.course_id=?";
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["id"],
+                $data["course_id"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+
+        foreach ($result as $row){
+            return $row;
+        }
+        
+    }
+
+    function getLearnerACourseProgress($data){
+
+        $conn = $this->db_conn();
+        $selectQuery = "SELECT COUNT(*) FROM `course_progression` WHERE `learner_id`=? and `course_id`=? and `status`='complete'";
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["id"],
+                $data["course_id"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $matarial_complete = $stmt->fetchColumn();
+
+        $selectQuery = "SELECT COUNT(*) FROM `course_material` WHERE `course_id`=?";
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["course_id"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $total_material = $stmt->fetchColumn();
+        $conn = null;
+
+        return (($matarial_complete/$total_material)*100);
+    }
+
+    
+
 }
 
 
