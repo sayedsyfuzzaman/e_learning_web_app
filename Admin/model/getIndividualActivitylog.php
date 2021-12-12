@@ -27,7 +27,7 @@ if (isset($_POST['id'])) {
 
                         </div>
                         <div class="col-md-12">
-                            <p>' . $row["comment_one"] . " " . $row["comment_two"] . " " . $row["comment_three"] . " " . $row["comment_four"] . '</p>
+                            <p>' . $row["comment_one"] . "; " . $row["comment_two"] . "; " . $row["comment_three"] . "; " . $row["comment_four"] . '</p>
                         </div>
                     </td>'
         );

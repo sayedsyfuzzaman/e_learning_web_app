@@ -101,6 +101,28 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 						<div class="col-12">
 							<div class="card">
 								<div class="card-header">
+									<h5 class="card-title">Enrolled Courses</h5>
+								</div>
+								<div class="card-body">
+									<table id="enrolled" class="table table-striped" style="width:100%">
+										<thead>
+											<td>Thumbnail</td>
+											<td>Course Name</td>
+											<td>Course ID</td>
+											<td>Price</td>
+											<td>Enrolled At</td>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
 									<h5 class="card-title">Activity Log</h5>
 								</div>
 								<div class="card-body">
@@ -143,7 +165,6 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 			}
 			return false;
 		};
-		//notification
 		var id = getUrlParameter('id');
 		$('#datatable').DataTable({
 			ajax: {
@@ -157,6 +178,24 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 			columns: [{
 				data: "title"
 			}]
+		});
+		$('#enrolled').DataTable({
+			ajax: {
+				url: 'model/getEnrolledcourse.php',
+				method: 'POST',
+				data: {
+					id: id
+				},
+				dataSrc: ''
+			},
+			columns: [
+				{ data: "thumbnail" },
+				{ data: "course_name" },
+				{ data: "course_id" },
+				{ data: "course_price" },
+				{ data: "enrolled_at" },
+				
+			]
 		});
 	</script>
 

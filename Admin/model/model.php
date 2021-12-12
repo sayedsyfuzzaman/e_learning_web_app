@@ -261,4 +261,17 @@ class model
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+    function showInstructor($id)
+    {
+        $conn = db_conn();
+        $selectQuery = 'SELECT * FROM `instructor_info` where id = ?';
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([$id]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
 }
