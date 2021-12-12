@@ -105,12 +105,16 @@ class Manager
 
             $model = new model();
             $AddStatus = $model->insertManager($data);
-            if ($AddStatus === true) {
-                header("location: add-manager.php?status=submitted&id=" . $data["id"] . "&password=" . $data["password"]);
-            } else {
+            if ($AddStatus === true){
+                header("location: add-manager.php?status=submitted&id=".$data["id"]."&password=".$data["password"]);
+            }
+            else
+            {
                 header("location: add-manager.php?status=submission_error");
             }
-        } else {
+        }
+        else
+        {
             header("location: add-manager.php?status=submission_error");
         }
         return "";
@@ -145,10 +149,10 @@ class Manager
         return $managerInfo;
     }
 
-    function deleteManager($id)
+    function updateStatus($status, $id)
     {
         $model = new model();
-        $Status = $model->deleteManager($id);
+        $Status = $model->changeStatus($status, $id);
         if ($Status == true) {
             return true;
         }

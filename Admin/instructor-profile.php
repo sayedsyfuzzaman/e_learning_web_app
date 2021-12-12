@@ -113,13 +113,15 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-
                                     <h5 class="card-title">Activity Log</h5>
+                                    <h6 class="card-subtitle text-muted">If you are using from mobile, click on a particular image to see more.</h6>
                                 </div>
                                 <div class="card-body">
                                     <table id="datatable" class="table table-striped" style="width:100%">
                                         <thead>
                                             <td>Title</td>
+                                            <td>Details</td>
+                                            <td>Date</td>
                                         </thead>
                                         <tbody>
                                         </tbody>
@@ -168,8 +170,16 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                 dataSrc: ''
             },
             columns: [{
-                data: "title"
-            }]
+                    data: "title"
+                },
+                {
+                    data: "details"
+                },
+                {
+                    data: "date"
+                }
+            ],
+            responsive: true
         });
     </script>
 

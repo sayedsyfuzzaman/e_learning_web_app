@@ -212,26 +212,21 @@ class model
         }
     }
 
-    function deleteManager($id){
+    function changeStatus($status, $id){
         $conn = db_conn();
-        $selectQuery = "DELETE FROM `manager_info` WHERE `id` = ?";
+        $selectQuery = "UPDATE manager_info set status = ? where id = ?";
         try{
             $stmt = $conn->prepare($selectQuery);
-            $stmt->execute([$id]);
+            $stmt->execute([
+                $status, 
+                $id
+            ]);
         }catch(PDOException $e){
             echo $e->getMessage();
         }
-
-        $selectQuery = "DELETE FROM `users` WHERE `id` = ?";
-        try{
-            $stmt = $conn->prepare($selectQuery);
-            $stmt->execute([$id]);
-        }catch(PDOException $e){
-            echo $e->getMessage();
+        if($stmt){
+            return true;
         }
-        $conn = null;
-    
-        return true;
     }
 
     function showManager($id)

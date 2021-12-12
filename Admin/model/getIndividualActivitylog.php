@@ -4,7 +4,7 @@ $id = "";
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
     $conn = db_conn();
-    $selectQuery = 'select title, comment_one, comment_two, comment_three, comment_four, DATE_FORMAT(date, "%M %d %Y, %r") as date from history where added_by = ?;';
+    $selectQuery = 'select title, comment_one, comment_two, comment_three, comment_four, DATE_FORMAT(date, "%d %b, %Y - %r")as date from history where added_by = ? ORDER BY date DESC';
     try {
         $stmt = $conn->prepare($selectQuery);
         $stmt->execute([$id]);
@@ -14,24 +14,14 @@ if (isset($_POST['id'])) {
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $data = array();
 
-    foreach ($result as $row) {
+    foreach($result as $row){
         $sub = array(
-            "title" => '<td>
-                        <div class="d-flex">
-                            <div class="col-md-8">
-                                <p><i class="fas fa-fw fa-newspaper mr-2"></i>' . $row["title"] . '</p>
-                            </div>
-                            <div class="col-md-4">
-                                <p><i class="ion ion-md-time mr-2"></i>' . $row["date"] . '</p>
-                            </div>
-
-                        </div>
-                        <div class="col-md-12">
-                            <p>' . $row["comment_one"] . "; " . $row["comment_two"] . "; " . $row["comment_three"] . "; " . $row["comment_four"] . '</p>
-                        </div>
-                    </td>'
+            "title" => $row["title"],
+            "details" => $row["comment_one"]."; ". $row["comment_two"]."; ".$row["comment_three"]."; ".$row["comment_four"],
+            "date" => $row["date"]
         );
         array_push($data, $sub);
     }
+    echo json_encode($data);
 }
-echo json_encode($data);
+

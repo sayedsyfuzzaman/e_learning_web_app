@@ -59,7 +59,7 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title">Showing all manager</h5>
-                                    <h6 class="card-subtitle text-muted">You can print, export and search your desired information.</h6>
+                                    <h6 class="card-subtitle text-muted">If you are using from mobile, click on a particular image to see more.</h6>
                                 </div>
                                 <div class="card-body">
                                     <table id="datatables-buttons" class="table table-striped" style="width:100%">
@@ -110,15 +110,15 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
     <script src="../js/app.js"></script>
 
     <script>
-        $(".btn-danger").click(function() {
+        function remove() {
             var dialog = confirm("Are you sure want to delete this manager?");
             if (dialog == true) {
                 var currentRow = $(this).closest("tr");
                 var id = currentRow.find("td:eq(2)").text();
-                var url = "manager-details.php?delete_manager="+id;
+                var url = "manager-details.php?delete_manager=" + id;
                 location.replace(url);
             }
-        });
+        }
         $(function() {
 
             var getUrlParameter = function getUrlParameter(sParam) {
@@ -174,22 +174,40 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
             });
 
             $('#datatables-buttons').DataTable({
-            ajax: {
-                url: 'model/getManagers.php',
-                dataSrc: ''
-            },
-            columns: [
-                { data: "image" },
-                { data: "name" },
-                { data: "id" },
-                { data: "email" },
-                { data: "nationality" },
-                { data: "nid" },
-                { data: "salary" },
-                { data: "created_at" },
-                { data: "action" },
-            ]
-        });
+                ajax: {
+                    url: 'model/getManagers.php',
+                    dataSrc: ''
+                },
+                columns: [{
+                        data: "image"
+                    },
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "id"
+                    },
+                    {
+                        data: "email"
+                    },
+                    {
+                        data: "nationality"
+                    },
+                    {
+                        data: "nid"
+                    },
+                    {
+                        data: "salary"
+                    },
+                    {
+                        data: "created_at"
+                    },
+                    {
+                        data: "action"
+                    },
+                ],
+                responsive: true
+            });
         });
     </script>
 

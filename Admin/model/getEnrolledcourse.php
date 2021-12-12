@@ -5,7 +5,7 @@ $id = "";
 if (isset($_POST['id'])) {
     $id = $_POST['id'];
     $conn = db_conn();
-    $selectQuery = 'select c.thumbnail, c.course_name, c.course_id, ec.course_price,  DATE_FORMAT(ec.enrolled_at, "%d %b, %Y - %h:%i %p") as enrolled_at from course_info c, enrolled_course ec where c.course_id = ec.course_id and ec.learner_id = ?';
+    $selectQuery = 'select c.thumbnail, c.course_name, c.course_id, ec.course_price,  DATE_FORMAT(ec.enrolled_at, "%d %b, %Y - %h:%i %p") as enrolled_at from course_info c, enrolled_course ec where c.course_id = ec.course_id and ec.learner_id = ? ORDER BY enrolled_at DESC';
     try {
         $stmt = $conn->prepare($selectQuery);
         $stmt->execute([$id]);

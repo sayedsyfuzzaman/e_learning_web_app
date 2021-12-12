@@ -444,11 +444,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $("#nid-error").html("Sorry! This nid already exist.");
                             $("#nid-error").show();
                             $("#nid").addClass("is-invalid")
-                            email_error = true;
+                            error_nid = true;
                         } else if (this.responseText == "not_exist") {
                             $("#nid-error").hide();
                             $("#nid").removeClass("is-invalid");
-                            email_error = false
+                            error_nid = false
                         }
                     }
                     xhttp.open("GET", "controller/NidChecker.php?nid=" + nid);

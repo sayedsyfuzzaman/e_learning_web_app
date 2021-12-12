@@ -3,7 +3,7 @@ require_once 'model/model.php';
 function getManagerID() {
     $model = new model();
     $count = $model->getTotalManagerNumber();
-    $count = (int)$count + 1000;
+    $count = (int)$count + (int)date("isa");
 
     $unique_id = date("Y")."-".$count."-". date("m");
     return $unique_id;

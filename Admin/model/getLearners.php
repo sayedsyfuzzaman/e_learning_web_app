@@ -1,7 +1,7 @@
 <?php
 require_once 'db_connect.php';
 $conn = db_conn();
-$selectQuery = 'SELECT * FROM `learner_info` ';
+$selectQuery = 'SELECT * FROM `learner_info` group by created_at DESC';
 try {
     $stmt = $conn->query($selectQuery);
 } catch (PDOException $e) {

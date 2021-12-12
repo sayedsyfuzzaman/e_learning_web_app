@@ -51,7 +51,7 @@ if (!isset($_SESSION['id'])) {
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="card-title">Showing all learner</h5>
-                                    <h6 class="card-subtitle text-muted">You can print, export and search your desired information.</h6>
+                                    <h6 class="card-subtitle text-muted">If you are using from mobile, click on a particular image to see more.</h6>
                                 </div>
                                 <div class="card-body">
                                     <table id="datatable" class="table table-striped table-hover" style="width:100%">
@@ -105,7 +105,8 @@ if (!isset($_SESSION['id'])) {
                 { data: "id" },
                 { data: "highest_degree" },
                 { data: "action" },
-            ]
+            ],
+            responsive: true
         });
     </script>
 
