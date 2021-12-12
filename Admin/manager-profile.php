@@ -37,7 +37,6 @@ $managerInfo = array(
 );
 if (isset($_GET['id']) && !empty($_GET['id'])) {
 	$managerInfo = $manager->fetchManager($_GET["id"]);
-	$activitylog = $manager->managerActivity($_GET["id"]);
 }
 ?>
 
@@ -122,29 +121,12 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 									<h5 class="card-title">Activity Log</h5>
 								</div>
 								<div class="card-body">
-									<table id="datatables-buttons" class="table table-striped" style="width:100%">
+									<table id="datatable" class="table table-striped" style="width:100%">
 										<thead>
 											<td>Title</td>
 										</thead>
 										<tbody>
-											<?php foreach ($activitylog as $row) : ?>
-												<tr>
-													<td>
-														<div class="d-flex">
-															<div class="col-md-8">
-																<p><i class="fas fa-fw fa-newspaper mr-2"></i><?php echo $row["title"] ?></p>
-															</div>
-															<div class="col-md-4">
-																<p><i class="ion ion-md-time mr-2"></i><?php echo $row["date"] ?></p>
-															</div>
-
-														</div>
-														<div class="col-md-12">
-															<p><?php echo $row["comment_one"]." ".$row["comment_two"]." ".$row["comment_three"]." ".$row["comment_four"] ?></p>
-														</div>
-													</td>
-												</tr>
-											<?php endforeach; ?>
+											
 										</tbody>
 									</table>
 								</div>
@@ -163,16 +145,39 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 	</div>
 
 	<script src="../js/app.js"></script>
-	<script>
-		$(function() {
-			var datatablesButtons = $('#datatables-buttons').DataTable({
-				lengthChange: !1,
-				buttons: ["csv", "print"],
-				responsive: true
-			});
-			datatablesButtons.buttons().container().appendTo("#datatables-buttons_wrapper .col-md-6:eq(0)")
+	<script type="text/javascript">
+		var getUrlParameter = function getUrlParameter(sParam) {
+			var sPageURL = window.location.search.substring(1),
+				sURLVariables = sPageURL.split('&'),
+				sParameterName,
+				i;
+
+			for (i = 0; i < sURLVariables.length; i++) {
+				sParameterName = sURLVariables[i].split('=');
+
+				if (sParameterName[0] === sParam) {
+					return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+				}
+			}
+			return false;
+		};
+		//notification
+		var id = getUrlParameter('id');
+		$('#datatable').DataTable({
+			ajax: {
+				url: 'model/getIndividualActivitylog.php',
+				method: 'POST',
+				data: {
+					id: id
+				},
+				dataSrc: ''
+			},
+			columns: [{
+				data: "title"
+			}]
 		});
 	</script>
+
 
 
 

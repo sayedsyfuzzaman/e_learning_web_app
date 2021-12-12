@@ -145,13 +145,6 @@ class Manager
         return $managerInfo;
     }
 
-    function managerActivity($id)
-    {
-        $model = new model();
-        $history = $model->showActivityLog($id);
-        return $history;
-    }
-
     function deleteManager($id)
     {
         $model = new model();

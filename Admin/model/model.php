@@ -167,35 +167,6 @@ class model
         return $count;
     }
 
-    function showAllManager()
-    {
-        $conn = db_conn();
-        $selectQuery = 'SELECT * FROM `manager_info` ';
-        try {
-            $stmt = $conn->query($selectQuery);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $conn = null;
-        return $rows;
-    }
-    function showAllLearner()
-    {
-        $conn = db_conn();
-        $selectQuery = 'SELECT * FROM `learner_info` ';
-        try {
-            $stmt = $conn->query($selectQuery);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $conn = null;
-        return $rows;
-    }
-
-
-    
     function updatePersonalInfo($data) {
         $conn = db_conn();
         $selectQuery = "UPDATE admin_info set name = ?, email = ?, phone = ?, nid = ?, dob = ?, gender = ?, address = ?, nationality = ? where id = ?";
@@ -281,20 +252,6 @@ class model
     {
         $conn = db_conn();
         $selectQuery = 'SELECT * FROM `learner_info` where id = ?';
-        try {
-            $stmt = $conn->prepare($selectQuery);
-            $stmt->execute([$id]);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $rows;
-    }
-
-    function showActivityLog($id)
-    {
-        $conn = db_conn();
-        $selectQuery = 'select title, comment_one, comment_two, comment_three, comment_four, DATE_FORMAT(date, "%M %d %Y, %r") as date from history where added_by = ?;';
         try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([$id]);

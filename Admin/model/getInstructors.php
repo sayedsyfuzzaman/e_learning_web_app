@@ -20,7 +20,7 @@ foreach($result as $row){
         "job_title" => $row["job_title"],
         "field" => $row["field"],
         "balance" => $row["balance"],
-        "action" => '<a target="blank" class="btn btn-outline-primary" href="instructor-profile.php?id='.$row['id'].'">View More</a>'
+        "action" => '<a target="_blank" class="btn btn-outline-primary" href="instructor-profile.php?id='.$row['id'].'">View More</a>'
     );
     array_push($data, $sub);
 }

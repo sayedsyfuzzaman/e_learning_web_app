@@ -22,7 +22,7 @@ foreach($result as $row){
         'nid' => $row["nid"],
         'salary' => $row["salary"],
         'created_at' => $row["created_at"],
-        'action' => '<a target="blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>'.
+        'action' => '<a target="_blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>'.
                     '<button type="button" class="btn btn-danger">Delete</button>'
                     
     );

@@ -7,7 +7,6 @@
     <link href="../css/modern.css" rel="stylesheet">
     <script src="../js/settings.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
     <style>
         hr {
@@ -55,7 +54,7 @@ if (!isset($_SESSION['id'])) {
                                     <h6 class="card-subtitle text-muted">You can print, export and search your desired information.</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table id="datatable" class="table table-striped" style="width:100%">
+                                    <table id="datatable" class="table table-striped table-hover" style="width:100%">
                                         <thead>
                                             <tr>
                                                 <th>Image</th>

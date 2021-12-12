@@ -26,11 +26,4 @@ class Learner
 
         return $learnerInfo;
     }
-
-    function lerarnerActivity($id)
-    {
-        $model = new model();
-        $history = $model->showActivityLog($id);
-        return $history;
-    }
 }

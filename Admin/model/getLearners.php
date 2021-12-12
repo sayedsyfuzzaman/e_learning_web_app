@@ -18,7 +18,7 @@ foreach($result as $row){
         "name" => $row["name"],
         "image" =>'<img style="height: 40px; height: 40px;" src="'.'../Learner/'.$row["image"].'" alt="Image"> </td>',
         "highest_degree" => $row["highest_degree"],
-        "action" => '<a target="blank" class="btn btn-outline-primary" href="learner-profile.php?id='.$row['id'].'">View More</a>'
+        "action" => '<a target="_blank" class="btn btn-outline-primary" href="learner-profile.php?id='.$row['id'].'">View More</a>'
     );
     array_push($data, $sub);
 }
