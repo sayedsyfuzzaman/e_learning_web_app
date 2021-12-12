@@ -16,6 +16,9 @@ function test_input($data)
 if (!isset($_SESSION['username'])) {
 	header("location:login.php");
 }
+if (isset($_SESSION['course_id'])){
+    unset($_SESSION['course_id']);
+}
 require_once "Controller/receiceLearnerInfoController.php";
 $obj = new student_info();
 $learner = $obj->get_learner($_SESSION['username']);

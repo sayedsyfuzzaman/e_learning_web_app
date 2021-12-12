@@ -1,0 +1,35 @@
+[
+{
+   "numb": 1,
+   "question": "What does HTML stand for?",
+   "answer": "Hyper Text Markup Language",
+   "options": [
+      "Hyper Text Preprocessor",
+      "Hyper Text Markup Language",
+      "Hyper Text Multiple Language",
+      "Hyper Tool Multi Language"
+    ]
+  },
+ {
+  "numb":2,
+  "question":"Which of the following jQuery method is used to hide the selected elements?",
+  "answer":"The hide() method",
+  "options":[
+   "The hide() method",
+   "The hidden() method",
+   "The visible(false) method",
+   "The display(none) method"
+  ]
+ },
+ {
+  "numb":3,
+  "question":"How do you find the minimum of x and y using JavaScript?",
+  "answer":"Math.min(x,y)",
+  "options":[
+   "min(x,y);",
+   "Math.min(x,y)",
+   "Math.min(xy)",
+   "min(xy);"
+  ]
+ }
+]

@@ -5,6 +5,9 @@ $allCourses = array();
 if (!isset($_SESSION['username'])) {
     header("location:login.php");
 }
+if (isset($_SESSION['course_id'])){
+    unset($_SESSION['course_id']);
+}
 require_once "Controller/CourseController.php";
 $course = new course();
 $allCourses = $course->get_LearnerCourseInfo($_SESSION['username']);
