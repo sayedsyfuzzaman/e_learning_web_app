@@ -38,7 +38,7 @@ if (!empty($learner)) {
                     </a>
                     <ul id="course" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
                         <li id="course_dashboard" class="sidebar-item "><a class="sidebar-link" href="courseDashboard.php">Course Dashboard</a></li>
-                        <li id="course_matarial" class="sidebar-item"><a class="sidebar-link" href="#">Course Matarial</a></li>
+                        <li id="course_matarial" class="sidebar-item"><a class="sidebar-link" href="courseMatarial.php">Course Matarial</a></li>
                         <li id="course_comunity" class="sidebar-item"><a class="sidebar-link" href="#">Course Comunity</a></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="dashboard.php">Main Manu</a></li>
                     </ul>

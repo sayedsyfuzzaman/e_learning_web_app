@@ -81,7 +81,7 @@ class courseModel{
                     echo "create_2 ".$e->getMessage();
                 }
 
-            $selectQuery = 'SELECT * FROM `course_material` where `course_id`=?';
+            $selectQuery = 'SELECT * FROM `course_material` where `course_id`=? and `serial`=1';
             try{
                 $stmt = $conn->prepare($selectQuery);
                 $stmt->execute([
@@ -101,9 +101,9 @@ class courseModel{
                 try{
                     $stmt = $conn->prepare($selectQuery_2);
                     $stmt->execute([
-                        ':learner_id'               =>    $data["id"] ,
+                        ':learner_id'  => $data["id"] ,
                         ':material_id' => $matarial["material_id"],
-                        ':status' => "incomplete",
+                        ':status' => "incomplete"
                     ]);
                 }catch(PDOException $e){
                     echo "create_2 ".$e->getMessage();
@@ -113,6 +113,8 @@ class courseModel{
             $conn = null;
 
     }
+
+
 
 
     
@@ -185,6 +187,94 @@ class courseModel{
 
         return (($matarial_complete/$total_material)*100);
     }
+
+    function getLearnerCurrentCourseMatarial($data){
+        $conn = $this->db_conn();
+        $selectQuery = 'SELECT m.* from course_progression cp, course_material m where m.material_id = cp.material_id and cp.status="incomplete" and cp.learner_id = ? and cp.course_id=?';
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["id"],
+                $data["course_id"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+
+        foreach ($result as $row){
+            return $row;
+        }
+    }
+    function getCurrentCourseMatarialQuiz($data){
+        $conn = $this->db_conn();
+        $selectQuery = 'SELECT q.* from course_quiz q, course_material m where m.material_id = q.material_id and m.course_id=q.course_id and m.course_id  = ? and m.material_id=?';
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["course_id"],
+                $data["material_id"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+
+        foreach ($result as $row){
+            return $row;
+        }
+    }
+
+    function updateProgess($data){
+        $conn = $this->db_conn();
+
+        $selectQuery = 'SELECT * from course_material where course_id = ? and serial=?';
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data["course_id"],
+                $data["serial"]
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $matarial= array();
+
+        $selectQuery = "UPDATE course_progression set status = 'complete'  where status = 'incomplete' and learner_id = ? and course_id = ?";
+        try{
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $data['id'], $data['course_id']
+            ]);
+        }catch(PDOException $e){
+            echo "Update ".$e->getMessage();
+        }
+
+        if(!empty($result)){
+            foreach ($result as $row){
+                $matarial=$row;
+                break;
+            }
+            $selectQuery_2 = "INSERT INTO `course_progression` (`learner_id`, `material_id`, `status`,`course_id`) VALUES (:learner_id, :material_id, :status, :course_id)";
+            try{
+                $stmt = $conn->prepare($selectQuery_2);
+                $stmt->execute([
+                    ':learner_id'  => $data["id"] ,
+                    ':material_id' => $matarial["material_id"],
+                    ':status' => "incomplete",
+                    ":course_id" => $data['course_id']
+                ]);
+            }catch(PDOException $e){
+                echo "create_2 ".$e->getMessage();
+            }
+
+        }
+        $conn = null;
+    }
+
 
     
 

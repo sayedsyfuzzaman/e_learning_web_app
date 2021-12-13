@@ -23,7 +23,7 @@
  },
  {
   "numb":3,
-  "question":"How do you find the minimum of x and y using JavaScript?",
+  "question":" How do you find the minimum of x and y using JavaScript?",
   "answer":"Math.min(x,y)",
   "options":[
    "min(x,y);",

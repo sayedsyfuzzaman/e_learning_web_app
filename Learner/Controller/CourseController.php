@@ -24,5 +24,17 @@ class course{
         $obj=new courseModel();
         return $obj->getLearnerACourseProgress($data);
     }
+
+    function get_LearnerCurrentCourseMatarial($data){
+        require_once "model/course_model.php";
+        $obj=new courseModel();
+        return $obj->getLearnerCurrentCourseMatarial($data);
+    }
+
+    function get_CurrentCourseMatarialQuiz($data){
+        require_once "model/course_model.php";
+        $obj=new courseModel();
+        return $obj->getCurrentCourseMatarialQuiz($data);
+    }
 }
 ?>
