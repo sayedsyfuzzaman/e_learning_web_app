@@ -97,13 +97,14 @@ class courseModel{
                 break;
             }
 
-            $selectQuery_2 = "INSERT INTO `course_progression`(`learner_id`, `material_id`, `status`) VALUES (:learner_id, :material_id, :status)";
+            $selectQuery_2 = "INSERT INTO `course_progression`(`learner_id`, `material_id`, `status`,`course_id`) VALUES (:learner_id, :material_id, :status,:course_id)";
                 try{
                     $stmt = $conn->prepare($selectQuery_2);
                     $stmt->execute([
                         ':learner_id'  => $data["id"] ,
                         ':material_id' => $matarial["material_id"],
-                        ':status' => "incomplete"
+                        ':status' => "incomplete",
+                        ":course_id" => $data["course_id"]
                     ]);
                 }catch(PDOException $e){
                     echo "create_2 ".$e->getMessage();

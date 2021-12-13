@@ -1,6 +1,6 @@
 <?PHP
 session_start();
-$name = $picture = "";
+$id = $picture = "";
 $matarial = array();
 $Course = array();
 if (isset($_GET["course_id"])) {
@@ -23,12 +23,29 @@ if (!isset($_SESSION['course_id'])) {
         unset($_SESSION['course_id']);
         header("location:dashboard.php");
     }
+    $id = $_SESSION['username'];
     $matarial = $obj->get_LearnerCurrentCourseMatarial($data);
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($matarial)) {
-        setcookie("material_id", $matarial["material_id"], time() + 20);
-        setcookie("serial", $matarial["serial"], time() + 20);
-        header("location:quiz.php");
+    require_once "Controller/receiceLearnerInfoController.php";
+    $obj = new student_info();
+    $learner = $obj->get_learner($_SESSION['username']);
+
+
+    if (empty($matarial)) {
+        $font = "../fonts/Pacifico.ttf";
+        $font2 = "../fonts/Aller_Bd.ttf";
+        $image = imagecreatefromjpeg("../Certificate/defaultCertificate.jpg");
+        $color = imagecolorallocate($image, 19, 21, 22);
+        $name = $learner['name'];
+        $name_len = strlen($name);
+        imagettftext($image, 30, 0, 1000 - ($name_len * 10), 800, $color, $font, $name);
+        $course = $Course["course_name"];
+        $course_len = strlen($course);
+        imagettftext($image, 30, 0, 1000 - ($course_len * 10), 1050, $color, $font, $course);
+        $date = date("jS \of F Y");
+        imagettftext($image, 23, 0, 1355, 1190, $color, $font2, $date);
+        imagejpeg($image, "../Certificate/" . $id . ".jpg");
+        imagedestroy($image);
     }
 }
 ?>
@@ -38,7 +55,7 @@ if (!isset($_SESSION['course_id'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Matarial</title>
+    <title>Certificates</title>
     <link href="../css/modern.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="../js/settings.js"></script>
@@ -53,7 +70,7 @@ if (!isset($_SESSION['course_id'])) {
         include 'courseSidebar.php';
         ?>
         <script>
-            document.getElementById('course_matarial').className = "sidebar-item active";
+            document.getElementById('get_certificate').className = "sidebar-item active";
         </script>
         <div class="main">
             <?php
@@ -64,9 +81,9 @@ if (!isset($_SESSION['course_id'])) {
             <main class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <?php if (empty($matarial)) : ?>
+                        <?php if (!empty($matarial)) : ?>
                             <div class="col-md-12 text-center">
-                                <h1 class="text-white">Congratulations! <br>You have successfully completed this course.<br> Please download your certificate from certificate section.</h1>
+                                <h1 class="text-white">You need to complete this course for geting certificate.</h1>
                             </div>
                             <div class="col-md-12 col-lg-12 text-center">
                                 <a class="mb-3 card overflow-hidden">
@@ -74,29 +91,25 @@ if (!isset($_SESSION['course_id'])) {
                                         <img src=<?PHP echo "../" . $Course["thumbnail"] ?> class="img-fluid card-img-hover landing-img" />
                                     </div>
                                 </a>
-                                <h2><?PHP echo $Course["course_name"] ?></h2>
-                                <h3><?PHP echo "Course ID: " . $Course["course_id"] ?></h3>
                             </div>
                         <?php endif; ?>
-                        <?php if (!empty($matarial)) : ?>
+
+                        <?php if (empty($matarial)) : ?>
                             <div class="col-md-12 text-center">
-                                <h1 class="text-white"><?PHP echo $Course["course_name"] ?><br><?PHP echo $matarial["title"] ?></h1>
+                                <h1 class="text-white">Congratulations! <br>You have successfully completed this course.<br> Please download your certificate.</h1>
                             </div>
                             <div class="col-md-12 col-lg-12 text-center">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src="<?PHP echo "../" . $matarial["video_file"] ?>" allowfullscreen></iframe>
-                                </div>
-                                <?php if (!empty($matarial["file"])) : ?>
-                                    <br>
-                                    <a href="<?PHP echo "../" . $matarial["file"] ?>" download>
-                                        <button class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Download Lacture Note</button>
-                                    </a>
-                                    <br>
-                                <?php endif; ?>
-                                <br>
-                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                                    <button class="btn btn-primary btn-lg" name="quiz_btn" id="quiz_btn">Attend Quiz</button>
-                                </form>
+                                <a class="mb-3 card overflow-hidden">
+                                    <div class="px-4 pt-4">
+                                        <h2><?PHP echo $Course["course_name"] ?></h2>
+                                        <h3><?PHP echo "Course ID: " . $Course["course_id"] ?></h3>
+                                        <br>
+                                        <a href="<?PHP echo "../Certificate/" . $id . ".jpg" ?>" download>
+                                            <button class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Download Certificate</button>
+                                        </a>
+                                        <br>
+                                    </div>
+                                </a>
                             </div>
                         <?php endif; ?>
                     </div>

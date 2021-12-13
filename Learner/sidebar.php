@@ -52,7 +52,7 @@ if (!empty($learner)) {
                         <i class="align-middle mr-2 fas fa-fw fa-book"></i> <span class="align-middle">Course</span>
                     </a>
                     <ul id="course" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                        <li class="sidebar-item "><a class="sidebar-link" href="#">Add Course</a></li>
+                        <!--<li class="sidebar-item "><a class="sidebar-link" href="#">Add Course</a></li>-->
                         <li id="course_list" class="sidebar-item"><a class="sidebar-link" href="course_list.php">Course List</a></li>
                     </ul>
                 </li>
