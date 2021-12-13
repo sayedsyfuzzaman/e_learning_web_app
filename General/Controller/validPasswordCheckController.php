@@ -26,6 +26,18 @@ else if($user["usertype"]=="Admin"){
         echo "false";
     }
 }
+else if($user["usertype"]=="Manager"){
+    $data = array(
+        'id' => $username,
+        'password' =>  $password
+    );
+    if(!empty($obj->getManagerInfo($data))){
+        echo "true";
+    }else{
+        echo "false";
+    }
+}
+
 //add your function name
 /* else if($user["usertype"]=="admin"){
 

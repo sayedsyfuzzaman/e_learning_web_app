@@ -18,17 +18,17 @@ if (isset($_COOKIE['username'])) {
     if (!empty($user)) {
 
         //learner
-        if($user["usertype"]=="learner"){
-            $isStudent=true;
+        if ($user["usertype"] == "learner") {
+            $isStudent = true;
             $data = array(
                 'username' => $_COOKIE['username'],
                 'password' =>  $_COOKIE['password']
             );
             $learner = $obj->found_learner($data);
-            if(!empty($learner)){
+            if (!empty($learner)) {
                 $name = $learner['name'];
-                $picture ="Learner/".$learner['image'];
-            }else{
+                $picture = "Learner/" . $learner['image'];
+            } else {
                 setcookie("username", "", time() - 3600);
                 setcookie("password", "", time() - 3600);
             }
@@ -57,30 +57,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = $obj->getUser($_COOKIE["username"]);
 
         //learner
-        if($user["usertype"]=="learner"){
+        if ($user["usertype"] == "learner") {
             $_SESSION['username'] = $_COOKIE["username"];
             $_SESSION['password'] = $_COOKIE["password"];
             header("location: Learner/dashboard.php");
         }
         //admin
-        else if($user["usertype"]=="Admin"){
+        else if ($user["usertype"] == "Admin") {
             $data = array(
                 'id' => $_COOKIE["username"],
                 'password' =>  $_COOKIE["password"]
             );
-            $obj->authenticateUser($data); 
+            $obj->authenticateUser($data);
             header("location: Admin/dashboard.php");
         }
 
+        //manager
+        else if ($user["usertype"] == "Manager") {
+            $data = array(
+                'id' => $_COOKIE["username"],
+                'password' =>  $_COOKIE["password"]
+            );
+            $obj->authenticateManagerUser($data);
+            header("location: Manager/dashboard.php");
+        }
+
         //add your code
-    }else if (isset($_COOKIE["username"]) && empty($_POST['remember']) && $_POST['username'] == $_COOKIE["username"] && $_POST['password'] == $_COOKIE["password"]) {
+    } else if (isset($_COOKIE["username"]) && empty($_POST['remember']) && $_POST['username'] == $_COOKIE["username"] && $_POST['password'] == $_COOKIE["password"]) {
 
         require_once "General/Controller/receiceInfoController.php";
         $obj = new user_info();
         $user = $obj->getUser($_COOKIE["username"]);
 
         //learner
-        if($user["usertype"]=="learner"){
+        if ($user["usertype"] == "learner") {
             $_SESSION['username'] = $_COOKIE["username"];
             $_SESSION['password'] = $_COOKIE["password"];
             setcookie("username", "", time() - 3600);
@@ -88,20 +98,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("location: Learner/dashboard.php");
         }
         //admin
-        else if($user["usertype"]=="Admin"){
+        else if ($user["usertype"] == "Admin") {
             $data = array(
                 'id' => $_COOKIE["username"],
                 'password' =>  $_COOKIE["password"]
             );
-            $obj->authenticateUser($data); 
+            $obj->authenticateUser($data);
             setcookie("username", "", time() - 3600);
             setcookie("password", "", time() - 3600);
             header("location: Admin/dashboard.php");
         }
 
+        //manager
+        else if ($user["usertype"] == "Manager") {
+            $data = array(
+                'id' => $_COOKIE["username"],
+                'password' =>  $_COOKIE["password"]
+            );
+            $obj->authenticateManagerUser($data);
+            setcookie("username", "", time() - 3600);
+            setcookie("password", "", time() - 3600);
+            header("location: Manager/dashboard.php");
+        }
+
+
         //add your code
-    }
-    else {
+    } else {
         $username = test_input($_POST["username"]);
 
         $data = array(
@@ -114,20 +136,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         //learner
-        if($user["usertype"]=="learner"){
+        if ($user["usertype"] == "learner") {
             $student = $obj->found_learner($data);
             $error = $obj->get_error();
-    
+
             $usernameErr = $error["usernameErr"];
             $passwordErr = $error["passwordErr"];
-    
-    
-    
+
+
+
             if (empty($passwordErr) && empty($usernameErr) && $student != "") {
                 $_SESSION['username'] = $username;
                 $_SESSION['password'] = $post["password"];
                 header("location: Learner/dashboard.php");
-    
+
                 if (!empty($_POST['remember']) && empty($passwordErr) && empty($usernameErr) && $student != "") {
                     setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
                     setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
@@ -138,17 +160,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         //admin
-        else if($user["usertype"]=="Admin"){
+        else if ($user["usertype"] == "Admin") {
             $data = array(
                 'id' => $username,
                 'password' =>  $_POST["password"]
             );
-            if($obj->authenticateUser($data)){
+            if ($obj->authenticateUser($data)) {
                 if (!empty($_POST['remember'])) {
                     setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
                     setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
                     header("location: Admin/dashboard.php");
-                }else{
+                } else {
+                    setcookie("username", "", time() - 3600);
+                    setcookie("password", "", time() - 3600);
+                }
+            }
+        }
+
+        //manager
+        else if ($user["usertype"] == "Manager") {
+            $data = array(
+                'id' => $username,
+                'password' =>  $_POST["password"]
+            );
+            if ($obj->authenticateManagerUser($data)) {
+                if (!empty($_POST['remember'])) {
+                    setcookie("username", $_POST['username'], time() + (60 * 60 * 24 * 30 * 12));
+                    setcookie("password", $_POST['password'], time() + (60 * 60 * 24 * 30 * 12));
+                    header("location: Manager/dashboard.php");
+                } else {
                     setcookie("username", "", time() - 3600);
                     setcookie("password", "", time() - 3600);
                 }
