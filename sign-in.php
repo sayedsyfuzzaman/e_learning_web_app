@@ -10,6 +10,14 @@ $student = "";
 $isStudent = false;
 $data = [];
 
+if (isset($_SESSION['id'])) {
+    if($_SESSION['usertype'] == "Admin"){
+        header("location: Admin/dashboard.php");
+    }else if($_SESSION['usertype'] == "Manager"){
+        header("location: Manager/dashboard.php");
+    }    
+}
+
 if (isset($_COOKIE['username'])) {
     require_once "General/Controller/receiceInfoController.php";
     $obj = new user_info();

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Add Manager</title>
+    <title>Dashboard</title>
     <link href="../css/modern.css" rel="stylesheet">
     <script src="../js/settings.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
