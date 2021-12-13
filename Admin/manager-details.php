@@ -21,11 +21,12 @@ if (!isset($_SESSION['id'])) {
     session_destroy();
     header("location:../sign-in.php");
 }
+require_once 'controller/Manager.php';
+$manager = new Manager();
+if (isset($_GET['status']) && !empty($_GET['status']) && !empty($_GET['id'])) {
 
-if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
-
-    if ($manager->deleteManager($_GET['delete_manager'])) {
-        header('Location: manager-details.php?status=deleted');
+    if ($manager->updateStatus($_GET['status'], $_GET["id"])) {
+        header('Location: manager-details.php?status=changed');
     } else {
         header('Location: manager-details.php?status=submission_error');
     }
@@ -71,8 +72,8 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                                                 <th>Email</th>
                                                 <th>Nationality</th>
                                                 <th>NID</th>
-                                                <th>Salary</th>
                                                 <th>Hire Date</th>
+                                                <th>Block/Unblock</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -87,7 +88,7 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                                                 <th>Nationality</th>
                                                 <th>NID</th>
                                                 <th>Salary</th>
-                                                <th>Hire Date</th>
+                                                <th>Block/Unblock</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
@@ -110,15 +111,6 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
     <script src="../js/app.js"></script>
 
     <script>
-        function remove() {
-            var dialog = confirm("Are you sure want to delete this manager?");
-            if (dialog == true) {
-                var currentRow = $(this).closest("tr");
-                var id = currentRow.find("td:eq(2)").text();
-                var url = "manager-details.php?delete_manager=" + id;
-                location.replace(url);
-            }
-        }
         $(function() {
 
             var getUrlParameter = function getUrlParameter(sParam) {
@@ -138,9 +130,9 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
             };
             //notification
             var param = getUrlParameter('status');
-            if (param == "deleted") {
-                var message = "Manager deleted successfully from the system.";
-                var title = "Deleted!";
+            if (param == "changed") {
+                var message = "Account avilability changed.";
+                var title = "Status Changed!";
                 var type = "success"; //success info warning error
                 toastr[type](message, title, {
                     positionClass: "toast-bottom-right",
@@ -197,10 +189,10 @@ if (isset($_GET['delete_manager']) && !empty($_GET['delete_manager'])) {
                         data: "nid"
                     },
                     {
-                        data: "salary"
+                        data: "created_at"
                     },
                     {
-                        data: "created_at"
+                        data: "status"
                     },
                     {
                         data: "action"

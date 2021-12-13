@@ -1,6 +1,5 @@
 <?php
 require_once 'db_connect.php';
-
 class model
 {
     function insertManager($data)
@@ -11,6 +10,8 @@ class model
         $Query2 = "INSERT into users (id, usertype)
         VALUES (:id, :usertype); ";
 
+        $Query3 = "INSERT into history (title, comment_one, comment_two,  added_by, date)
+                    VALUES (:title, :comment_one, :comment_two, :added_by, now()); ";
         try {
             $stmt1 = $conn->prepare($Query1);
             $stmt1->execute([
@@ -33,7 +34,17 @@ class model
                 ':usertype'    => "Manager"
             ]);
 
-            if ($stmt1 == true and $stmt2 == true) {
+            $stmt3 = $conn->prepare($Query3);
+            $stmt3->execute([
+                ':title'           => "Created a New Manager.",
+                ':comment_one'    => "Manager ID:".$data["id"],
+                ':comment_two'    => "Manager Password:".$data["password"],
+                ':added_by'    => $data["added_by"]
+            ]);
+
+           
+
+            if ($stmt1 == true and $stmt2 == true and $stmt3 == true) {
                 return true;
             } else {
                 $conn = null;
@@ -110,7 +121,7 @@ class model
         return false;
     }
 
-    function checkExistingPersonalNID($nid , $id)
+    function checkExistingPersonalNID($nid, $id)
     {
         $conn = db_conn();
         $selectQuery = "SELECT * FROM `admin_info` where nid = ? and id != ?";
@@ -133,7 +144,8 @@ class model
         return false;
     }
 
-    function getUserInfo($data){
+    function getUserInfo($data)
+    {
         $conn = db_conn();
         $selectQuery = "select u.usertype , a.* from users u , admin_info a where u.id = a.id and u.id = ? and a.password = ? ";
         try {
@@ -160,17 +172,18 @@ class model
             echo $e->getMessage();
         }
         $count = 0;
-        while($stmt->fetch(PDO::FETCH_OBJ)) {
+        while ($stmt->fetch(PDO::FETCH_OBJ)) {
             $count++;
         }
         $conn = null;
         return $count;
     }
 
-    function updatePersonalInfo($data) {
+    function updatePersonalInfo($data)
+    {
         $conn = db_conn();
         $selectQuery = "UPDATE admin_info set name = ?, email = ?, phone = ?, nid = ?, dob = ?, gender = ?, address = ?, nationality = ? where id = ?";
-        try{
+        try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([
                 $data["name"],
@@ -183,48 +196,51 @@ class model
                 $data["nationality"],
                 $data["id"]
             ]);
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
         $conn = null;
-        if($stmt == true)
-        {
+        if ($stmt == true) {
             return true;
         }
         return false;
     }
 
-    function updatePassword($password) {
+    function updatePassword($password)
+    {
         $conn = db_conn();
         $selectQuery = "UPDATE admin_info set password = ? where id = ? and password = ?";
-        try{
+        try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([
                 $password["new"],
                 $password["id"],
                 $password["current"]
             ]);
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        if($stmt){
+        if ($stmt) {
             return true;
         }
     }
 
-    function changeStatus($status, $id){
+    function changeStatus($status, $id)
+    {
         $conn = db_conn();
         $selectQuery = "UPDATE manager_info set status = ? where id = ?";
-        try{
+
+
+        try {
             $stmt = $conn->prepare($selectQuery);
             $stmt->execute([
-                $status, 
+                $status,
                 $id
             ]);
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
-        if($stmt){
+        if ($stmt) {
             return true;
         }
     }

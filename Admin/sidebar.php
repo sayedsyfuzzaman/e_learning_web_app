@@ -20,7 +20,7 @@
                     </a>
                     <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show" data-parent="#sidebar">
                         <li class="sidebar-item active"><a class="sidebar-link " href="dashboard.php">Home</a></li>
-                        <li class="sidebar-item"><a class="sidebar-link" href="activity-log.php?id=<?php echo $_SESSION["id"];?>">Activity Log</a></li>
+                        <li class="sidebar-item"><a class="sidebar-link" href="my-activity.php?id=<?php echo $_SESSION["id"];?>">My Activity</a></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="view-profile.php">View Profile</a></li>
                     </ul>
                 </li>

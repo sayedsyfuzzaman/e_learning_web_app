@@ -37,12 +37,12 @@ if (!isset($_SESSION['id'])) {
                 <div class="container-fluid">
                     <div class="header">
                         <h1 class="header-title">
-                            Activity Log
+                        My Activity
                         </h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Activity Log</li>
+                                <li class="breadcrumb-item active" aria-current="page">My Activity</li>
                             </ol>
                         </nav>
                     </div>
@@ -50,7 +50,7 @@ if (!isset($_SESSION['id'])) {
 						<div class="col-12">
 							<div class="card">
 								<div class="card-header">
-									<h5 class="card-title">Activity Log</h5>
+									<h5 class="card-title">My Activity</h5>
 									<h6 class="card-subtitle text-muted">If you are using from mobile, click on a particular image to see more.</h6>
 								</div>
 								<div class="card-body">

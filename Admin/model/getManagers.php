@@ -13,22 +13,23 @@ $conn = null;
 $data = array();
 
 foreach($result as $row){
-    $action = '<a target="_blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>'.
-    '<button type="button" onclick = "changeStatus()" class="btn btn-danger"><i class="align-middle fas fa-fw fa-ban"></i></button>';
+    $action = '<a target="_blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>';
+    $status = '<a class="btn btn-danger" href="manager-details.php?status=false&id='.$row['id'].'"><i class="align-middle fas fa-fw fa-check mr-3"></i>Block</a>';
 
     if($row["status"] == "false"){
-        $action = '<a target="_blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>'.
-        '<button type="button" class="btn btn-success"><i class="align-middle fas fa-fw fa-check"></i></button>';
+        $action = '<a target="_blank" class="btn btn-outline-primary" href="manager-profile.php?id='.$row['id'].'">View</a>';
+        $status = '<a class="btn btn-success" href="manager-details.php?status=true&id='.$row['id'].'"><i class="align-middle fas fa-fw fa-ban"></i>Unblock</a>';
     }
+
     $sub = array(
-        'image' => '<img style="height: 40px; height: 40px;" src="'.'../Admin/'.$row["image"].'" alt="Image"> </td>',
+        'image' => '<img style="height: 40px; height: 40px;" src="'.'../Manager/'.$row["image"].'" alt="Image"> </td>',
         'name' => $row["name"],
         'id' => $row["id"],
         'email' => $row["email"],
         'nationality' => $row["nationality"],
         'nid' => $row["nid"],
-        'salary' => $row["salary"],
         'created_at' => $row["created_at"],
+        'status' => $status,
         'action' => $action
                     
     );

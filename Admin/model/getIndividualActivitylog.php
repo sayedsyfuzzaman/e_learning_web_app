@@ -17,7 +17,7 @@ if (isset($_POST['id'])) {
     foreach($result as $row){
         $sub = array(
             "title" => $row["title"],
-            "details" => $row["comment_one"]."; ". $row["comment_two"]."; ".$row["comment_three"]."; ".$row["comment_four"],
+            "details" => $row["comment_one"]."<br>". $row["comment_two"]."<br>".$row["comment_three"]."<br>".$row["comment_four"],
             "date" => $row["date"]
         );
         array_push($data, $sub);

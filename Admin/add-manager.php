@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'gender' => "",
         'address' => "",
         'image' => "upload/default.png",
+        'added_by' => $_SESSION["id"]
     );
 
 
