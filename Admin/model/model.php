@@ -37,12 +37,12 @@ class model
             $stmt3 = $conn->prepare($Query3);
             $stmt3->execute([
                 ':title'           => "Created a New Manager.",
-                ':comment_one'    => "Manager ID:".$data["id"],
-                ':comment_two'    => "Manager Password:".$data["password"],
+                ':comment_one'    => "Manager ID:" . $data["id"],
+                ':comment_two'    => "Manager Password:" . $data["password"],
                 ':added_by'    => $data["added_by"]
             ]);
 
-           
+
 
             if ($stmt1 == true and $stmt2 == true and $stmt3 == true) {
                 return true;
@@ -285,4 +285,61 @@ class model
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $rows;
     }
+
+    function getDailyEnrolles($date)
+    {
+        $conn = db_conn();
+        $selectQuery = 'select * from course_info where DATE_FORMAT(created_at, "%d/%m/%Y") = ?' ;
+
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute([
+                $date
+            ]);
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $count = 0;
+        while ($stmt->fetch(PDO::FETCH_OBJ)) {
+            $count++;
+        }
+        $conn = null;
+        return $count;
+    }
+
+    function getTotalUsers()
+    {
+        $conn = db_conn();
+        $selectQuery = 'select * from users' ;
+
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $count = 0;
+        while ($stmt->fetch(PDO::FETCH_OBJ)) {
+            $count++;
+        }
+        $conn = null;
+        return $count;
+    }
+
+    function getTotalEarnings()
+    {
+        $conn = db_conn();
+        $selectQuery = 'SELECT SUM(course_price) as earnings FROM enrolled_course;' ;
+
+        try {
+            $stmt = $conn->prepare($selectQuery);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+        }
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $rows;
+    }
+
+    
 }
