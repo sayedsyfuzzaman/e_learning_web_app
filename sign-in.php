@@ -320,7 +320,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section class="pt-6 landing-bg text-white overflow-hidden">
         <nav class="navbar navbar-expand navbar-dark absolute-top w-100 py-2">
             <div class="container">
-                <a class="navbar-brand font-weight-bold" href="#">
+                <a class="navbar-brand font-weight-bold" href="index.php">
                     E Learning Web App
                 </a>
             </div>

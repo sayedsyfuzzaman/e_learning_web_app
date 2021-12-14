@@ -27,13 +27,13 @@
 session_start();
 $message =  "";
 if(!isset($_SESSION["message"])){
-    header("Location: login.php");
+    header("Location: ../sign-in.php");
 }
 
 $message=$_SESSION["message"];
 session_destroy();
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    header("Location:login.php");
+    header("Location:../sign-in.php");
 }
 ?>
 

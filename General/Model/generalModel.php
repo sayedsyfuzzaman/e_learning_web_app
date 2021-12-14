@@ -22,6 +22,20 @@ class model
         return $conn;
     }
 
+    function getAllCourse(){
+
+        $conn = $this->db_conn();
+        $selectQuery = 'SELECT * FROM `course_info` where `avilability`="true"';
+        try{
+            $stmt = $conn->query($selectQuery);
+        }catch(PDOException $e){
+            echo "course ".$e->getMessage();
+        }
+        $course = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $course;
+
+    }
+
     function get_user($id)
     {
 
