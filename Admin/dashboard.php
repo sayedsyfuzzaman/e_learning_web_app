@@ -64,7 +64,7 @@ require_once 'controller/Overview.php';
                             <div class="card flex-fill">
                                 <div class="card-header">
                                     <div class="card-actions float-right">
-                                        <a target="_blank" class="btn btn-outline-primary" href="#">Explore Courses</a>
+                                        <a target="_blank" class="btn btn-outline-primary" href="courses.php">Explore Courses</a>
                                     </div>
                                     <h5 class="card-title mb-0">Latest Courses</h5>
                                 </div>
