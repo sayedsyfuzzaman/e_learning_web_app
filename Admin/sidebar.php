@@ -43,7 +43,6 @@
                         <i class="align-middle mr-2 fas fa-fw fa-book"></i> <span class="align-middle">Course</span>
                     </a>
                     <ul id="course" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-                        <li class="sidebar-item "><a class="sidebar-link" href="add-course.php">Add Course</a></li>
                         <li class="sidebar-item"><a class="sidebar-link" href="courses.php">Course List</a></li>
                     </ul>
                 </li>

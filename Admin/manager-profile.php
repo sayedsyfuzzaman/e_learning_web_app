@@ -72,7 +72,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 								<div class="card-body">
 									<div class="row">
 										<div class="col-md-12 d-flex justify-content-center">
-											<img alt="" src="<?php echo $managerInfo["image"]; ?>" class="rounded-circle img-responsive mt-2" width="128" height="128" />
+											<img alt="" src="<?php echo "../Manager/".$managerInfo["image"]; ?>" class="rounded-circle img-responsive mt-2" width="128" height="128" />
 										</div>
 										<div class="col-md-12 d-flex justify-content-center">
 											<h3><?php echo $managerInfo["name"]; ?></h3>
