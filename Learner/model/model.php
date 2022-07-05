@@ -5,10 +5,10 @@
 
        function db_conn()
       {
-        $servername = "springsoftbd.com";
-        $username = "elearning_webapp_admin";
-        $password = "elearning_webapp_admin%8879";
-        $dbname = "elearning_webapp";
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "e_learning_web_app";
 
         try {
             $conn = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);

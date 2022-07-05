@@ -1,6 +1,4 @@
-﻿# Host: springsoftbd.com  (Version 5.7.27-0ubuntu0.16.04.1-log)
-# Date: 2021-12-11 03:01:30
-# Generator: MySQL-Front 6.1  (Build 1.26)
+﻿
 
 
 #
