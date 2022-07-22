@@ -42,19 +42,19 @@ if (!isset($_SESSION['course_id'])) {
 
 <head>
     <meta charset="utf-8">
-    <title>Quiz</title>
-    <link href="../css/modern.css" rel="stylesheet">
-    <script src="../js/settings.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/script.js"></script>
-    <link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
-    <script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
+	<title>Quiz</title>
+	<link href="css/modern.css" rel="stylesheet">
+	<script src="js/settings.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="js/script.js"></script>
+	<link rel="stylesheet" href="https://fengyuanchen.github.io/cropperjs/css/cropper.css" />
+	<script src="https://fengyuanchen.github.io/cropperjs/js/cropper.js"></script>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
 
 <body>
-    <input type="text" id="quiz_url" value="<?php echo "../" . $quiz['file'] ?>" style="display: none">
+    <input type="text" id="quiz_url" value="<?php echo '../'.$quiz['file'] ?>" style="display: none">
     <div class="start_btn" id="start_btn"><button>Start Quiz</button></div>
     <div class="info_box" id="info_box">
         <div class="info-title"><span>Some Rules of this Quiz</span></div>

@@ -67,6 +67,7 @@ $(function () {
 
 
     function showQuetions(index) {
+        console.log(url);
         const que_text = document.querySelector(".que_text");
         let que_tag = '<span>' + questions[index].numb + ". " + questions[index].question + '</span>';
         let option_tag = '<div class="option" id="option1")"><span>' + questions[index].options[0] + '</span></div>'
