@@ -1,10 +1,10 @@
 <?php 
 function db_conn()
 {
-    $servername = "springsoftbd.com";
-    $username = "elearning_webapp_admin";
-    $password = "elearning_webapp_admin%8879";
-    $dbname = "elearning_webapp";
+    $servername = "sql205.epizy.com";
+    $username = "epiz_32271769";
+    $password = "3W5Mz5NLxE";
+    $dbname = "epiz_32271769_e_learning_web_app";
 
     try {
         $conn = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);

@@ -1,10 +1,10 @@
 <?php 
 function db_conn()
 {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "e_learning_web_app";
+    $servername = "sql205.epizy.com";
+    $username = "epiz_32271769";
+    $password = "3W5Mz5NLxE";
+    $dbname = "epiz_32271769_e_learning_web_app";
 
     
 

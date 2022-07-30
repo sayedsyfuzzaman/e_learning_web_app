@@ -1,5 +1,5 @@
 $(function () {
-    let url=$("#quiz_url").val();
+    let url=$("#quiz_url").val(); 
 
     const result_box = document.querySelector(".result_box");
     const option_list = document.querySelector(".option_list");

@@ -32,8 +32,8 @@ if (!isset($_SESSION['course_id'])) {
 
 
     if (empty($matarial)) {
-        $font = "../fonts/Pacifico.ttf";
-        $font2 = "../fonts/Aller_Bd.ttf";
+        $font = "C:/xampp/htdocs/e_learning_web_app/fonts/Pacifico.ttf";
+        $font2 = "C:/xampp/htdocs/e_learning_web_app/fonts/Aller_Bd.ttf";
         $image = imagecreatefromjpeg("../Certificate/defaultCertificate.jpg");
         $color = imagecolorallocate($image, 19, 21, 22);
         $name = $learner['name'];

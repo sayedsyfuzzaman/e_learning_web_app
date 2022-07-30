@@ -3,10 +3,10 @@ class courseModel{
 
     function db_conn()
     {
-      $servername = "localhost";
-      $username = "root";
-      $password = "";
-      $dbname = "e_learning_web_app";
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "e_learning_web_app";
 
       try {
           $conn = new PDO('mysql:host='.$servername.';dbname='.$dbname.';charset=utf8', $username, $password);

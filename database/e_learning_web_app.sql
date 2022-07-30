@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2022 at 10:09 AM
+-- Generation Time: Jul 30, 2022 at 07:52 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -173,8 +173,9 @@ CREATE TABLE `course_progression` (
 --
 
 INSERT INTO `course_progression` (`learner_id`, `material_id`, `course_id`, `status`) VALUES
-('22-10007-04', '101', '123', 'incomplete'),
-('21-10002-12', '101', '123', 'incomplete');
+('22-10007-04', '101', '123', 'complete'),
+('21-10002-12', '101', '123', 'incomplete'),
+('22-10009-07', '101', '123', 'complete');
 
 -- --------------------------------------------------------
 
@@ -197,7 +198,7 @@ CREATE TABLE `course_quiz` (
 --
 
 INSERT INTO `course_quiz` (`quiz_id`, `material_id`, `title`, `file`, `created_by`, `created_at`, `course_id`) VALUES
-('140', '101', 'quiz_1', 'quiz/question_1.txt', '21-5001-12', '2021-12-18 09:26:14', '123');
+('140', '101', 'quiz_1', 'Quiz/question_1.txt', '21-5001-12', '2021-12-18 09:26:14', '123');
 
 -- --------------------------------------------------------
 
@@ -222,7 +223,8 @@ INSERT INTO `enrolled_course` (`learner_id`, `course_id`, `enrolled_at`, `course
 ('21-10003-12', '123', '2021-12-14 09:55:28', '360.00'),
 ('22-10006-04', '123', '2022-04-19 11:40:59', '360.00'),
 ('22-10007-04', '123', '2022-04-19 12:53:34', '360.00'),
-('21-10002-12', '123', '2022-07-05 21:52:01', '360.00');
+('21-10002-12', '123', '2022-07-05 21:52:01', '360.00'),
+('22-10009-07', '123', '2022-07-30 23:11:52', '360.00');
 
 -- --------------------------------------------------------
 
@@ -260,7 +262,8 @@ INSERT INTO `history` (`serial`, `title`, `comment_one`, `comment_two`, `comment
 (43, 'Created a New Course.', 'Course ID: 1423', 'Course Name: Cloud IT Solution', NULL, NULL, '2022-1152-01', '2022-01-14 00:14:25'),
 (44, 'Course Enrolled', 'Course ID: 123', 'Course Name: Web Technologies 11', NULL, NULL, '22-10006-04', '2022-04-19 11:41:00'),
 (45, 'Course Enrolled', 'Course ID: 123', 'Course Name: Web Technologies 11', NULL, NULL, '22-10007-04', '2022-04-19 12:53:35'),
-(46, 'Course Enrolled', 'Course ID: 123', 'Course Name: Web Technologies 11', NULL, NULL, '21-10002-12', '2022-07-05 21:52:01');
+(46, 'Course Enrolled', 'Course ID: 123', 'Course Name: Web Technologies 11', NULL, NULL, '21-10002-12', '2022-07-05 21:52:01'),
+(47, 'Course Enrolled', 'Course ID: 123', 'Course Name: Web Technologies 11', NULL, NULL, '22-10009-07', '2022-07-30 23:11:52');
 
 -- --------------------------------------------------------
 
@@ -319,7 +322,8 @@ INSERT INTO `learner_info` (`id`, `password`, `name`, `highest_degree`, `email`,
 ('22-10005-01', 'Abc@1234!', 'Most. Tabassum Tahmina', 'graduate', 'tabassum@gmail.com', '2021-12-29', 'female', 'broken.png', '2022-01-13 23:40:10'),
 ('22-10006-04', 'mahim@1234', 'Mahim Talukder', 'graduate', 'mahim75@gmail.com', '2022-04-04', 'male', 'broken.png', '2022-04-19 10:32:29'),
 ('22-10007-04', 'mahim@123', 'hi a', 'graduate', 'mahim45@gmail.com', '2022-04-07', 'male', 'broken.png', '2022-04-19 12:50:04'),
-('22-10008-04', 'Polok@gmail.com', 'sdad asas', 'graduate', 'aaa@fty.bs', '2020-04-28', 'male', 'broken.png', '2022-04-20 00:41:30');
+('22-10008-04', 'Polok@gmail.com', 'sdad asas', 'graduate', 'aaa@fty.bs', '2020-04-28', 'male', 'broken.png', '2022-04-20 00:41:30'),
+('22-10009-07', 'Fatema@123', 'Fatema a', 'graduate', 'fatema123@gmail.com', '2022-07-30', 'female', 'broken.png', '2022-07-30 23:11:08');
 
 -- --------------------------------------------------------
 
@@ -425,7 +429,8 @@ INSERT INTO `users` (`serial`, `id`, `usertype`) VALUES
 (36, '2022-1152-01', 'Manager'),
 (37, '22-10006-04', 'learner'),
 (38, '22-10007-04', 'learner'),
-(39, '22-10008-04', 'learner');
+(39, '22-10008-04', 'learner'),
+(40, '22-10009-07', 'learner');
 
 --
 -- Indexes for dumped tables
@@ -550,13 +555,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `serial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `serial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `serial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `serial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- Constraints for dumped tables
